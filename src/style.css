@@ -3806,8 +3806,7 @@
         .landing-subjects-grid {
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         }
-    }
-\n
+
 /* Game UI CSS */
 .hidden { display: none !important; }
 .game-modal-overlay, .game-over-overlay {

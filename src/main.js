@@ -4,7 +4,7 @@ console.log('EduGames clone initialized');
 
 document.addEventListener('DOMContentLoaded', () => {
     // UI Elements
-    const mathCards = document.querySelectorAll('.landing-subject-card[href="/game/arqon/"]');
+    const mathCards = document.querySelectorAll('a[href="/game/arqon/"]');
     const modalOverlay = document.getElementById('game-modal-overlay');
     const gameUI = document.getElementById('game-ui');
     const appMain = document.querySelector('body > :not(#game-modal-overlay):not(#game-ui):not(script)');
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameSettings.team2Name = document.getElementById('team2-name').value || "2-Jamoa";
         
         modalOverlay.classList.add('hidden');
-        if (appMain) appMain.style.display = 'none';
+        document.body.style.overflow = 'hidden';
         gameUI.classList.remove('hidden');
         
         initGame();
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function exitGame() {
         gameUI.classList.add('hidden');
         document.getElementById('game-over-overlay').classList.add('hidden');
-        if (appMain) appMain.style.display = '';
+        document.body.style.overflow = '';
         clearInterval(gameState.timerInterval);
     }
 
