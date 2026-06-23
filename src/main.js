@@ -143,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModal() {
         modalOverlay.classList.remove('hidden');
+        modalOverlay.style.display = '';
         if (gameMode !== 'math') {
             document.querySelector('.game-modal-steps').classList.add('hide-el');
             currentStep = 3;
@@ -219,8 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
         gameSettings.team2Name = document.getElementById('team2-name').value || "2-Jamoa";
         
         modalOverlay.classList.add('hidden');
+        modalOverlay.style.display = 'none';
         document.body.style.overflow = 'hidden';
         gameUI.classList.remove('hidden');
+        gameUI.style.display = '';
         
         if (gameMode !== 'math') {
             document.querySelectorAll('.numpad').forEach(el => el.classList.add('hide-el'));
@@ -243,7 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function exitGame() {
         gameUI.classList.add('hidden');
+        gameUI.style.display = 'none';
         document.getElementById('game-over-overlay').classList.add('hidden');
+        document.getElementById('game-over-overlay').style.display = 'none';
         document.body.style.overflow = '';
         clearInterval(gameState.timerInterval);
     }
@@ -371,6 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('winner-text').innerText = `${wName.toUpperCase()} G'OLIB!`;
         document.getElementById('winner-text').style.color = winnerNum === 1 ? '#0284c7' : '#dc2626';
         document.getElementById('game-over-overlay').classList.remove('hidden');
+        document.getElementById('game-over-overlay').style.display = '';
     }
     
     function handleCorrect(team) {
