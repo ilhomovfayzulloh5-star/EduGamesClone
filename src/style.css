@@ -3887,3 +3887,21 @@
 
 .game-over-modal { background: white; padding: 40px; border-radius: 16px; text-align: center; }
 .game-over-modal h2 { font-size: 32px; color: #111827; margin: 0; }
+\n
+/* MCQ UI CSS */
+.mcq-pad { display: flex; flex-direction: column; gap: 10px; background: white; padding: 15px; border-radius: 12px; }
+.mcq-btn { 
+    background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; padding: 10px 15px; 
+    font-size: 16px; font-weight: bold; cursor: pointer; color: #111827; 
+    display: flex; align-items: center; gap: 15px; text-align: left; transition: all 0.2s;
+}
+.mcq-btn:active { transform: scale(0.98); }
+.mcq-letter { 
+    width: 32px; height: 32px; border-radius: 50%; background: #e0f2fe; color: #0284c7;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;
+}
+.red-panel .mcq-letter { background: #fef2f2; color: #dc2626; }
+.mcq-text { flex: 1; }
+.mcq-btn.correct { background: #dcfce7; border-color: #22c55e; }
+.mcq-btn.wrong { background: #fee2e2; border-color: #ef4444; }
+.hide-el { display: none !important; }
