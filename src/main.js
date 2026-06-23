@@ -2,17 +2,28 @@
 console.log('EduGames clone initialized');
 
 document.addEventListener('DOMContentLoaded', () => {
-    // UI Elements
-    const mathCards = document.querySelectorAll('a[href="/game/arqon/"]');
-    const enCards = document.querySelectorAll('a[href="/game/en/"]');
-    const ruCards = document.querySelectorAll('a[href="/game/ru/"]');
+    const subjects = [
+        { id: 'math', href: '/game/arqon/', title: 'ARQON TORTISH: MATEMATIKA' },
+        { id: 'en', href: '/game/en/', title: 'ARQON TORTISH: INGLIZ TILI' },
+        { id: 'ru', href: '/game/ru/', title: 'ARQON TORTISH: RUS TILI' },
+        { id: 'mother', href: '/game/mother/', title: 'ARQON TORTISH: ONA TILI' },
+        { id: 'biology', href: '/game/biology/', title: 'ARQON TORTISH: BIOLOGIYA' },
+        { id: 'kimyo', href: '/game/kimyo/', title: 'ARQON TORTISH: KIMYO' },
+        { id: 'fizika', href: '/game/fizika/', title: 'ARQON TORTISH: FIZIKA' },
+        { id: 'history', href: '/game/history/', title: 'ARQON TORTISH: TARIX' },
+        { id: 'geography', href: '/game/geography/', title: 'ARQON TORTISH: GEOGRAFIYA' },
+        { id: 'informatika', href: '/game/informatika/', title: 'ARQON TORTISH: INFORMATIKA' },
+        { id: 'literature', href: '/game/literature/', title: 'ARQON TORTISH: ADABIYOT' },
+        { id: 'turkish', href: '/game/turkish/', title: 'ARQON TORTISH: TURK TILI' },
+        { id: 'math', href: '/game/', title: 'ARQON TORTISH: MATEMATIKA' } // Default game links
+    ];
+
     const modalOverlay = document.getElementById('game-modal-overlay');
     const gameUI = document.getElementById('game-ui');
     const gameHeaderTitle = document.querySelector('.game-header h2');
     
-    // Modal steps
     let currentStep = 1;
-    let gameMode = 'math'; // 'math', 'en', 'ru'
+    let gameMode = 'math';
     
     const steps = document.querySelectorAll('.step');
     const stepContents = document.querySelectorAll('.step-content');
@@ -20,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('modal-next-btn');
     const btnStart = document.getElementById('modal-start-btn');
     
-    // Game state
     let gameSettings = {
         operations: ['+'],
         difficulty: 'easy',
@@ -31,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameState = {
         team1Score: 0,
         team2Score: 0,
-        ropePos: 0, // -10 to +10
+        ropePos: 0, 
         timerInterval: null,
         secondsElapsed: 0,
         currentQ1: null,
@@ -39,60 +49,101 @@ document.addEventListener('DOMContentLoaded', () => {
         maxScore: 10
     };
 
-    const enQuestions = [
-        { q: "Plural form of 'child' is:", options: ["Children", "Childes", "Childs", "Childrens"], correct: 0 },
-        { q: "Opposite of 'big' is:", options: ["Long", "Small", "Short", "Tall"], correct: 1 },
-        { q: "Past tense of 'go' is:", options: ["Goed", "Gone", "Went", "Going"], correct: 2 },
-        { q: "Translate: 'Olma'", options: ["Banana", "Orange", "Apple", "Grape"], correct: 2 },
-        { q: "Synonym for 'happy':", options: ["Sad", "Angry", "Joyful", "Tired"], correct: 2 },
-        { q: "Which is a color?", options: ["Table", "Blue", "Run", "Quick"], correct: 1 },
-        { q: "Opposite of 'fast':", options: ["Quick", "Slow", "Hard", "Easy"], correct: 1 },
-        { q: "Plural of 'mouse':", options: ["Mouses", "Mice", "Meese", "Mouse"], correct: 1 },
-        { q: "What is 3rd letter of alphabet?", options: ["A", "B", "C", "D"], correct: 2 },
-        { q: "Past tense of 'eat':", options: ["Eated", "Eaten", "Ate", "Eating"], correct: 2 }
-    ];
+    const questionBanks = {
+        en: [
+            { q: "Plural form of 'child' is:", options: ["Children", "Childes", "Childs", "Childrens"], correct: 0 },
+            { q: "Opposite of 'big' is:", options: ["Long", "Small", "Short", "Tall"], correct: 1 },
+            { q: "Past tense of 'go' is:", options: ["Goed", "Gone", "Went", "Going"], correct: 2 },
+            { q: "Translate: 'Olma'", options: ["Banana", "Orange", "Apple", "Grape"], correct: 2 },
+            { q: "Synonym for 'happy':", options: ["Sad", "Angry", "Joyful", "Tired"], correct: 2 }
+        ],
+        ru: [
+            { q: "Сколько слогов в слове «молоко»?", options: ["4", "3", "1", "2"], correct: 1 },
+            { q: "Сколько времен у глаголов в русском языке?", options: ["5", "4", "2", "3"], correct: 3 },
+            { q: "Антоним к слову «большой»:", options: ["Высокий", "Длинный", "Маленький", "Широкий"], correct: 2 },
+            { q: "Как пишется?", options: ["Пагода", "Погода", "Пагада", "Погада"], correct: 1 },
+            { q: "Какой падеж отвечает на вопросы Кем? Чем?", options: ["Именительный", "Дательный", "Творительный", "Родительный"], correct: 2 }
+        ],
+        mother: [
+            { q: "Qaysi gapda son bor?", options: ["U yugurdi", "Uch daftar", "Men keldim", "Yaxshi bola"], correct: 1 },
+            { q: "Qaysi so'z harakatni bildiradi?", options: ["Ular", "Yozadi", "Daftar", "Katta"], correct: 1 },
+            { q: "Sifat qanday so'roqqa javob bo'ladi?", options: ["Kim? Nima?", "Nima qildi?", "Qanday? Qanaqa?", "Nechta?"], correct: 2 },
+            { q: "O'zbek alifbosida nechta harf bor?", options: ["28", "29", "30", "31"], correct: 1 },
+            { q: "'Kitob' so'zi qaysi so'z turkumiga kiradi?", options: ["Sifat", "Ot", "Fe'l", "Son"], correct: 1 }
+        ],
+        biology: [
+            { q: "Changlanish nima?", options: ["Changning urug'chaga tushishi", "Urug'ning unishi", "Meva hosil bo'lishi", "Fotosintez"], correct: 0 },
+            { q: "Ovqat hazm qilish qayerda boshlanadi?", options: ["Qizilo'ngachda", "Ichakda", "Og'iz bo'shlig'ida", "Oshqozonda"], correct: 2 },
+            { q: "Hujayraning asosiy qismi nima?", options: ["Qobiq", "Yadro", "Sitoplazma", "Vakuola"], correct: 1 },
+            { q: "O'simlikka yashil rang beruvchi modda:", options: ["Xlorofill", "Kraxmal", "Shakar", "Oqsil"], correct: 0 },
+            { q: "Inson yuragi nechta kamerali?", options: ["2", "3", "4", "5"], correct: 2 }
+        ],
+        kimyo: [
+            { q: "Suvning kimyoviy formulasi qanday?", options: ["H2O", "CO2", "O2", "NaCl"], correct: 0 },
+            { q: "Eng yengil gaz qaysi?", options: ["Kislorod", "Azot", "Vodorod", "Geliy"], correct: 2 },
+            { q: "Osh tuzining formulasi:", options: ["H2SO4", "NaCl", "HCl", "NaOH"], correct: 1 },
+            { q: "Havoning asosiy qismini qaysi gaz tashkil etadi?", options: ["Kislorod", "Vodorod", "Azot", "Karbonat angidrid"], correct: 2 },
+            { q: "Temirning kimyoviy belgisi:", options: ["Te", "Fe", "Cu", "Ag"], correct: 1 }
+        ],
+        fizika: [
+            { q: "Tezlik qanday harf bilan belgilanadi?", options: ["m", "t", "v", "s"], correct: 2 },
+            { q: "Kuch qaysi asbob yordamida o'lchanadi?", options: ["Tarozu", "Dinamometr", "Spidometr", "Barometr"], correct: 1 },
+            { q: "Massa birligi nima?", options: ["Nyuton", "Kilogramm", "Metr", "Sekund"], correct: 1 },
+            { q: "Nyutonning nechta qonuni bor?", options: ["1", "2", "3", "4"], correct: 2 },
+            { q: "Erkin tushish tezlanishi (g) nechaga teng?", options: ["9.8 m/s²", "10 m/s", "8.9 m/s²", "11 m/s²"], correct: 0 }
+        ],
+        history: [
+            { q: "Amir Temur qachon tug'ilgan?", options: ["1336-yil", "1441-yil", "1370-yil", "1405-yil"], correct: 0 },
+            { q: "Alisher Navoiy qayerda tug'ilgan?", options: ["Samarqand", "Xiva", "Hirot", "Buxoro"], correct: 2 },
+            { q: "O'zbekiston qachon mustaqillikka erishdi?", options: ["1990", "1991", "1992", "1993"], correct: 1 },
+            { q: "Birinchi jahon urushi qachon boshlangan?", options: ["1912", "1914", "1918", "1939"], correct: 1 },
+            { q: "Zahiriddin Muhammad Bobur qayerda hukmronlik qilgan?", options: ["Xorazm", "Hindiston", "Eron", "Xitoy"], correct: 1 }
+        ],
+        geography: [
+            { q: "Dunyodagi eng katta qit'a qaysi?", options: ["Afrika", "Shimoliy Amerika", "Yevrosiyo", "Avstraliya"], correct: 2 },
+            { q: "Yer yuzining necha foizini suv egallagan?", options: ["50%", "60%", "71%", "80%"], correct: 2 },
+            { q: "Eng uzun daryo qaysi?", options: ["Amazonka", "Nil", "Amudaryo", "Missisipi"], correct: 0 },
+            { q: "O'zbekiston nechta davlat bilan chegaradosh?", options: ["4", "5", "6", "3"], correct: 1 },
+            { q: "Dunyodagi eng katta okean qaysi?", options: ["Atlantika", "Hind", "Tinch", "Shimoliy Muz"], correct: 2 }
+        ],
+        informatika: [
+            { q: "Eng kichik axborot o'lchov birligi:", options: ["Bayt", "Bit", "Kilobayt", "Megabayt"], correct: 1 },
+            { q: "1 Bayt nechta bitdan iborat?", options: ["8", "10", "16", "32"], correct: 0 },
+            { q: "Kompyuterning miyasi deb nima ataladi?", options: ["Monitor", "Klaviatura", "Protsessor", "Sichqoncha"], correct: 2 },
+            { q: "Internet qachon paydo bo'lgan?", options: ["1950-yillar", "1960-yillar oxiri", "1990-yillar", "2000-yillar"], correct: 1 },
+            { q: "Dasturlash tili qaysi biri?", options: ["HTML", "Windows", "Python", "Google"], correct: 2 }
+        ],
+        literature: [
+            { q: "'Xamsa' asari muallifi kim?", options: ["Bobur", "Lutfiy", "Alisher Navoiy", "Mashrab"], correct: 2 },
+            { q: "'O'tkan kunlar' romani qahramoni kim?", options: ["Otabek", "Anvar", "Sidiqjon", "Yo'lchi"], correct: 0 },
+            { q: "'Shum bola' asari kimning qalamiga mansub?", options: ["Oybek", "G'afur G'ulom", "Abdulla Qodiriy", "Cho'lpon"], correct: 1 },
+            { q: "Ruboiy nechta misradan iborat bo'ladi?", options: ["2", "4", "6", "8"], correct: 1 },
+            { q: "Alpomish dostonidagi bosh qahramonning singlisi?", options: ["Barchin", "Qaldirg'och", "Oybarchin", "Surayyo"], correct: 1 }
+        ],
+        turkish: [
+            { q: "Turk tilida 'Salom' nima deyiladi?", options: ["Merhaba", "Güle güle", "Teşekkür", "Lütfen"], correct: 0 },
+            { q: "Turk alifbosida nechta harf bor?", options: ["28", "29", "30", "31"], correct: 1 },
+            { q: "Turkiya poytaxti qayer?", options: ["Istanbul", "Ankara", "Izmir", "Antalya"], correct: 1 },
+            { q: "'Su' so'zining tarjimasi nima?", options: ["Suv", "Non", "Olma", "Choy"], correct: 0 },
+            { q: "Rahmat so'zining turkchasi:", options: ["Lütfen", "Evet", "Hayır", "Teşekkür ederim"], correct: 3 }
+        ]
+    };
 
-    const ruQuestions = [
-        { q: "Сколько слогов в слове «молоко»?", options: ["4", "3", "1", "2"], correct: 1 },
-        { q: "Сколько времен у глаголов в русском языке?", options: ["5", "4", "2", "3"], correct: 3 },
-        { q: "Антоним к слову «большой»:", options: ["Высокий", "Длинный", "Маленький", "Широкий"], correct: 2 },
-        { q: "Как пишется?", options: ["Пагода", "Погода", "Пагада", "Погада"], correct: 1 },
-        { q: "Какой падеж отвечает на вопросы Кем? Чем?", options: ["Именительный", "Дательный", "Творительный", "Родительный"], correct: 2 },
-        { q: "Множественное число слова «человек»:", options: ["Человеки", "Люди", "Человеков", "Люд"], correct: 1 },
-        { q: "Синоним к слову «красивый»:", options: ["Ужасный", "Плохой", "Прекрасный", "Злой"], correct: 2 },
-        { q: "Какая буква идет после 'Д'?", options: ["Ж", "Г", "Е", "З"], correct: 2 },
-        { q: "Сколько падежей в русском языке?", options: ["5", "6", "7", "4"], correct: 1 },
-        { q: "Переведите: 'Olma'", options: ["Груша", "Апельсин", "Яблоко", "Банан"], correct: 2 }
-    ];
-
-    // 1. Open Modal
-    mathCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.preventDefault();
-            gameMode = 'math';
-            openModal();
-        });
-    });
-
-    enCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.preventDefault();
-            gameMode = 'en';
-            openModal();
-        });
-    });
-
-    ruCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.preventDefault();
-            gameMode = 'ru';
-            openModal();
+    // Attach click events
+    subjects.forEach(subject => {
+        document.querySelectorAll(`a[href="${subject.href}"]`).forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                gameMode = subject.id;
+                gameHeaderTitle.innerText = subject.title;
+                openModal();
+            });
         });
     });
 
     function openModal() {
         modalOverlay.classList.remove('hidden');
-        if (gameMode === 'en' || gameMode === 'ru') {
+        if (gameMode !== 'math') {
             document.querySelector('.game-modal-steps').classList.add('hide-el');
             currentStep = 3;
             updateModalUI();
@@ -103,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 2. Modal interactions
     document.querySelectorAll('.op-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('selected');
@@ -164,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 3. Start Game
     btnStart.addEventListener('click', () => {
         gameSettings.team1Name = document.getElementById('team1-name').value || "1-Jamoa";
         gameSettings.team2Name = document.getElementById('team2-name').value || "2-Jamoa";
@@ -173,14 +222,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'hidden';
         gameUI.classList.remove('hidden');
         
-        if (gameMode === 'en' || gameMode === 'ru') {
-            gameHeaderTitle.innerText = gameMode === 'en' ? "ARQON TORTISH: INGLIZ TILI" : "ARQON TORTISH: RUS TILI";
+        if (gameMode !== 'math') {
             document.querySelectorAll('.numpad').forEach(el => el.classList.add('hide-el'));
             document.querySelectorAll('.answer-input').forEach(el => el.classList.add('hide-el'));
             document.getElementById('game-mcq1').classList.remove('hidden');
             document.getElementById('game-mcq2').classList.remove('hidden');
         } else {
-            gameHeaderTitle.innerText = "ARQON TORTISH: MATEMATIKA";
             document.querySelectorAll('.numpad').forEach(el => el.classList.remove('hide-el'));
             document.querySelectorAll('.answer-input').forEach(el => el.classList.remove('hide-el'));
             document.getElementById('game-mcq1').classList.add('hidden');
@@ -201,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(gameState.timerInterval);
     }
 
-    // --- GAME LOGIC ---
     function generateQuestion() {
         if (gameMode === 'math') {
             const ops = gameSettings.operations;
@@ -233,8 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (op === '/') ans = a / b;
             return { str: qStr, ans: ans, type: 'math' };
         } else {
-            // English or Russian mode
-            const bank = gameMode === 'en' ? enQuestions : ruQuestions;
+            const bank = questionBanks[gameMode] || questionBanks['en'];
             const idx = Math.floor(Math.random() * bank.length);
             const qObj = bank[idx];
             return { str: qObj.q, options: qObj.options, correct: qObj.correct, type: gameMode };
@@ -341,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
         nextQuestion(team);
     }
 
-    // Math Numpad logic
     document.querySelectorAll('.num-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const team = parseInt(btn.dataset.team);
@@ -369,7 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // English/Russian MCQ logic
     document.querySelectorAll('.mcq-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const team = parseInt(btn.dataset.team);
