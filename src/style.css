@@ -3887,7 +3887,7 @@
 
 .game-over-modal { background: white; padding: 40px; border-radius: 16px; text-align: center; }
 .game-over-modal h2 { font-size: 32px; color: #111827; margin: 0; }
-\n
+
 /* MCQ UI CSS */
 .mcq-pad { display: flex; flex-direction: column; gap: 10px; background: white; padding: 15px; border-radius: 12px; }
 .mcq-btn { 
