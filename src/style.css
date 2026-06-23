@@ -3807,3 +3807,84 @@
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         }
     }
+\n
+/* Game UI CSS */
+.hidden { display: none !important; }
+.game-modal-overlay, .game-over-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+}
+.game-modal {
+    background: #fff; border-radius: 12px; width: 600px; max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); overflow: hidden; font-family: 'Manrope', sans-serif;
+}
+.game-modal-header { text-align: center; padding: 20px; border-bottom: 1px solid #e5e7eb; }
+.game-modal-header h2 { margin: 0 0 20px 0; color: #0284c7; font-size: 20px; font-weight: 800; }
+.game-modal-steps { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #9ca3af; }
+.step.active { color: #0284c7; font-weight: bold; }
+.step-num { width: 30px; height: 30px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.step.active .step-num { background: #0284c7; color: #fff; }
+.step-line { height: 2px; width: 40px; background: #e5e7eb; margin-bottom: 20px; }
+.step-text { font-size: 12px; }
+
+.game-modal-body { padding: 30px; min-height: 250px; }
+.step-content { text-align: center; display: none; }
+.step-content.active { display: block; }
+.step-content h3 { margin-top: 0; color: #374151; }
+.operations-grid, .difficulty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.op-btn, .diff-btn { 
+    padding: 15px; border: 2px solid #e5e7eb; border-radius: 12px; background: #f9fafb;
+    font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px;
+    transition: all 0.2s;
+}
+.op-btn.selected, .diff-btn.selected { border-color: #0284c7; background: #e0f2fe; }
+.op-icon, .diff-icon { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 8px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.bg-blue { background: #0284c7; color: white; }
+
+.teams-grid { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 20px; }
+.team-input-card { flex: 1; padding: 20px; border-radius: 12px; text-align: center; border: 2px solid; }
+.blue-card { border-color: #0284c7; background: #f0f9ff; }
+.red-card { border-color: #dc2626; background: #fef2f2; }
+.team-icon { font-size: 30px; margin-bottom: 10px; }
+.team-label { font-weight: bold; margin-bottom: 10px; color: #374151; }
+.team-input-card input { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; text-align: center; font-weight: bold; }
+.vs-text { font-size: 24px; font-weight: 800; color: #0284c7; }
+
+.game-modal-footer { display: flex; justify-content: center; gap: 15px; padding: 20px; border-top: 1px solid #e5e7eb; background: #f9fafb; }
+.modal-btn { padding: 12px 30px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; border: none; }
+.modal-btn.primary { background: #0284c7; color: white; }
+.modal-btn.outline { background: white; border: 1px solid #d1d5db; color: #374151; }
+
+.game-ui { position: fixed; inset: 0; background: #f0f4f8; z-index: 9999; display: flex; flex-direction: column; }
+.game-header { text-align: center; padding: 15px; position: relative; }
+.game-header h2 { color: #0284c7; margin: 0; font-weight: 800; }
+.game-exit-btn { position: absolute; right: 20px; top: 15px; padding: 8px 15px; background: #e5e7eb; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+.game-board { flex: 1; display: flex; padding: 20px; gap: 20px; justify-content: center; align-items: stretch; }
+.game-team-panel { width: 300px; border-radius: 16px; display: flex; flex-direction: column; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.blue-panel { background: #0284c7; color: white; }
+.red-panel { background: #dc2626; color: white; }
+.team-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 18px; margin-bottom: 15px; }
+.team-score { background: white; color: black; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.blue-panel .team-score { color: #0284c7; }
+.red-panel .team-score { color: #dc2626; }
+.question-box { background: rgba(255,255,255,0.2); padding: 20px; text-align: center; font-size: 28px; font-weight: bold; border-radius: 12px; margin-bottom: 15px; }
+.answer-input { width: 100%; text-align: center; font-size: 24px; padding: 10px; border: none; border-radius: 8px; margin-bottom: 15px; font-weight: bold; color: black; }
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: white; padding: 15px; border-radius: 12px; }
+.num-btn { background: #f3f4f6; border: none; border-radius: 8px; padding: 15px; font-size: 20px; font-weight: bold; cursor: pointer; color: #111827; }
+.num-btn:active { background: #e5e7eb; transform: scale(0.95); }
+.bg-red-btn { background: #dc2626; color: white; }
+.bg-blue-btn { background: #0284c7; color: white; }
+
+.game-center-panel { flex: 1; background: white; border-radius: 16px; display: flex; flex-direction: column; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.game-center-header { display: flex; justify-content: space-between; align-items: center; font-size: 24px; font-weight: bold; background: #f3f4f6; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+.score-blue-txt { color: #0284c7; }
+.score-red-txt { color: #dc2626; }
+.timer { color: #0284c7; }
+.tug-of-war-arena { flex: 1; position: relative; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+.center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; border-left: 2px dashed #9ca3af; transform: translateX(-50%); z-index: 1; }
+.rope-container { position: absolute; inset: 0; z-index: 2; transition: transform 0.3s ease-out; }
+
+.game-over-modal { background: white; padding: 40px; border-radius: 16px; text-align: center; }
+.game-over-modal h2 { font-size: 32px; color: #111827; margin: 0; }
