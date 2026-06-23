@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#20b8e7">
+      <meta name="description" content="EduGames.uz - bolalar va talabalar uchun ta&#039;limiy o&#039;yinlar platformasi. Edu games, jamoaviy o&#039;yinlar, arqon tortish, estafeta va interaktiv bilim o&#039;yinlari orqali o&#039;rganing.">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <meta name="keywords" content="ta&#039;limiy o&#039;yinlar, bolalar uchun o&#039;yinlar, interaktiv ta&#039;lim, o&#039;yin orqali o&#039;rganish, jamoaviy o&#039;yinlar, harakatli o&#039;yinlar, arqon, arqon tortish, arqon tortish o&#039;yini, estafeta, estafeta o&#039;yini, sport o&#039;yinlari, maktab o&#039;yinlari, bog&#039;cha o&#039;yinlari, talabalar uchun o&#039;yinlar, zamonaviy ta&#039;lim, online ta&#039;limiy o&#039;yinlar, edu games uz, educational games for kids">
+        <meta name="author" content="EduGames.uz">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://edugames.uz/">
+        <meta property="og:title" content="EduGames.uz - O&#039;yin orqali o&#039;rganish">
+        <meta property="og:description" content="Bolalar va talabalar uchun zamonaviy ta&#039;lim o&#039;yinlari platformasi">
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://edugames.uz/">
+        <meta property="twitter:title" content="EduGames.uz - O&#039;yin orqali o&#039;rganish">
+        <meta property="twitter:description" content="EduGames.uz - bolalar va talabalar uchun ta&#039;limiy o&#039;yinlar platformasi. Edu games, jamoaviy o&#039;yinlar, arqon tortish, estafeta va interaktiv bilim o&#039;yinlari orqali o&#039;rganing.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,200..1000&display=swap" rel="stylesheet">
+  <title>EduGames.uz — Bolalar uchun ta&#039;limiy o&#039;yinlar platformasi</title>
+  <link rel="icon" type="image/svg+xml" href="/edugames-icon-transparent.png">
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="EduGames.uz">
+  <meta name="mobile-web-app-capable" content="yes">
+      <link rel="canonical" href="https://edugames.uz/">
+  
+  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/app/app.css">
+  <script>
+  
+    window.__PWA_CONFIG__ = {
+      serviceWorkerUrl: "/service-worker.js"    };
+  </script>
+  <script defer src="/assets/app/pwa-install.js"></script>
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXBTW3ZLMT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-LXBTW3ZLMT');
+  </script>
+  <script>
+    (function() {
+      'use strict';
+
+      function normalizeSearchText(value) {
+        let text = String(value || '').toLowerCase();
+        if (typeof text.normalize === 'function') {
+          text = text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+        }
+        return text
+          .replace(/['’`]/g, '')
+          .replace(/[^a-z0-9\u0400-\u04ff]+/g, ' ')
+          .trim();
+      }
+
+      function buildCountryItems(selectEl) {
+        return Array.from(selectEl.options || [])
+          .map(function(option) {
+            const value = String(option.value || '').trim().toUpperCase();
+            const text = String(option.textContent || '').trim();
+            return {
+              value: value,
+              text: text,
+              normalized: normalizeSearchText(text + ' ' + value)
+            };
+          })
+          .filter(function(item) {
+            return item.value !== '' && item.text !== '';
+          });
+      }
+
+      function enhanceCountrySelect(config) {
+        const searchInput = config && config.searchInput ? config.searchInput : null;
+        const selectEl = config && config.selectEl ? config.selectEl : null;
+        if (!searchInput || !selectEl || searchInput.dataset.countryAutocompleteReady === '1') {
+          return null;
+        }
+
+        const placeholderText = String(config && config.placeholderText ? config.placeholderText : 'Davlat tanlanmagan');
+        const noResultsText = String(config && config.noResultsText ? config.noResultsText : 'Natija topilmadi');
+        const onChange = typeof (config && config.onChange) === 'function' ? config.onChange : null;
+        const items = buildCountryItems(selectEl);
+        let filteredItems = items.slice();
+        let suppressMirror = false;
+
+        searchInput.dataset.countryAutocompleteReady = '1';
+        searchInput.setAttribute('autocomplete', 'off');
+        searchInput.setAttribute('autocapitalize', 'off');
+        searchInput.setAttribute('spellcheck', 'false');
+
+        function rebuildOptions(nextItems, selectedValue) {
+          const previousValue = String(selectEl.value || '').trim().toUpperCase();
+          selectEl.innerHTML = '';
+
+          const placeholderOption = document.createElement('option');
+          placeholderOption.value = '';
+          placeholderOption.textContent = placeholderText;
+          selectEl.appendChild(placeholderOption);
+
+          if (!nextItems.length) {
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.disabled = true;
+            emptyOption.textContent = noResultsText;
+            selectEl.appendChild(emptyOption);
+          } else {
+            nextItems.forEach(function(item) {
+              const option = document.createElement('option');
+              option.value = item.value;
+              option.textContent = item.text;
+              selectEl.appendChild(option);
+            });
+          }
+
+          const nextValue = String(selectedValue || '').trim().toUpperCase();
+          selectEl.value = nextValue;
+          if (selectEl.value !== nextValue) {
+            selectEl.value = '';
+          }
+
+          if (previousValue !== String(selectEl.value || '').trim().toUpperCase()) {
+            selectEl.dispatchEvent(new Event('change', {
+              bubbles: true
+            }));
+          }
+        }
+
+        function autoPickValue(query) {
+          const normalizedQuery = normalizeSearchText(query);
+          if (!normalizedQuery) {
+            return String(selectEl.value || '').trim().toUpperCase();
+          }
+
+          const exactMatch = filteredItems.find(function(item) {
+            return item.normalized === normalizedQuery;
+          });
+          if (exactMatch) {
+            return exactMatch.value;
+          }
+
+          if (filteredItems.length === 1) {
+            return filteredItems[0].value;
+          }
+
+          const currentValue = String(selectEl.value || '').trim().toUpperCase();
+          const currentStillVisible = filteredItems.some(function(item) {
+            return item.value === currentValue;
+          });
+          return currentStillVisible ? currentValue : '';
+        }
+
+        function render(query) {
+          const normalizedQuery = normalizeSearchText(query);
+          filteredItems = items.filter(function(item) {
+            return normalizedQuery === '' || item.normalized.indexOf(normalizedQuery) !== -1;
+          });
+          rebuildOptions(filteredItems, autoPickValue(query));
+        }
+
+        function mirrorSelectionToInput() {
+          if (suppressMirror) {
+            return;
+          }
+          const selectedValue = String(selectEl.value || '').trim().toUpperCase();
+          const selectedItem = items.find(function(item) {
+            return item.value === selectedValue;
+          });
+          if (!selectedItem) {
+            return;
+          }
+          searchInput.value = selectedItem.text;
+        }
+
+        searchInput.addEventListener('input', function() {
+          render(searchInput.value);
+          if (onChange) {
+            onChange(selectEl.value);
+          }
+        });
+
+        searchInput.addEventListener('keydown', function(event) {
+          if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            selectEl.focus();
+            return;
+          }
+          if (event.key === 'Enter' && filteredItems.length === 1) {
+            event.preventDefault();
+            searchInput.value = filteredItems[0].text;
+            rebuildOptions(filteredItems, filteredItems[0].value);
+          }
+        });
+
+        searchInput.addEventListener('search', function() {
+          render(searchInput.value);
+        });
+
+        selectEl.addEventListener('change', function() {
+          mirrorSelectionToInput();
+          if (onChange) {
+            onChange(selectEl.value);
+          }
+        });
+
+        searchInput.addEventListener('focus', function() {
+          if (searchInput.value.trim() !== '') {
+            searchInput.select();
+          }
+        });
+
+        suppressMirror = true;
+        render('');
+        suppressMirror = false;
+        mirrorSelectionToInput();
+
+        return {
+          render: render,
+          select: selectEl,
+          input: searchInput
+        };
+      }
+
+      window.EduCountryAutocomplete = {
+        enhance: enhanceCountrySelect,
+        normalize: normalizeSearchText
+      };
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m, e, t, r, i, k, a) {
+      m[i] = m[i] || function() {
+        (m[i].a = m[i].a || []).push(arguments)
+      };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) {
+          return;
+        }
+      }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=106769904', 'ym');
+
+    ym(106769904, 'init', {
+      ssr: true,
+      webvisor: true,
+      clickmap: true,
+      ecommerce: "dataLayer",
+      referrer: document.referrer,
+      url: location.href,
+      accurateTrackBounce: true,
+      trackLinks: true
+    });
+  </script>
+  <!-- /Yandex.Metrika counter -->
+
+
+
+
+  <!-- Yandex.RTB -->
+  <!-- <script>
+    window.yaContextCb = window.yaContextCb || []
+  </script>
+  <script src="https://yandex.ru/ads/system/context.js" async></script> -->
+
+
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="logout-overlay" id="logoutOverlay"></div>
+
+
+  <div class="logout-modal" id="logoutModal">
+    <div class="modal-header">
+      <div class="modal-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </div>
+      <h3 class="modal-title">Chiqish</h3>
+    </div>
+    <p class="modal-text">Haqiqatan ham tizimdan chiqmoqchimisiz?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-cancel" id="cancelLogout">Yo'q</button>
+      <button type="button" class="btn btn-danger" id="confirmLogout">Ha, chiqish</button>
+    </div>
+  </div>
+
+  
+  
+      <div class="app-wrapper">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <a href="/" class="brand-logo">
+            <img class="logo-light" src="/edugames-black.png" alt="EduGames.uz" />
+          </a>
+        </div>
+
+                <nav class="sidebar-nav">
+
+          <a href="/" class="nav-link active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span class="nav-text">Bosh sahifa</span>
+          </a>
+
+          <!-- Materiallar -->
+          <div class="nav-dropdown ">
+            <button type="button" class="nav-dropdown-toggle " data-dropdown="guestCreateMenu">
+              <span style="display:flex; align-items:center; gap:10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14"></path>
+                  <path d="M5 12h14"></path>
+                  <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+                </svg>
+                <span class="nav-text">Materiallar</span>
+              </span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu" id="guestCreateMenu">
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="4" y="3" width="16" height="18" rx="3"></rect>
+                  <rect x="7" y="7" width="10" height="3" rx="1"></rect>
+                  <circle cx="8.5" cy="13.5" r="1.2"></circle>
+                  <circle cx="12" cy="13.5" r="1.2"></circle>
+                  <circle cx="15.5" cy="13.5" r="1.2"></circle>
+                </svg>
+                <span class="nav-text">Ishchi varaq</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="14" rx="3"></rect>
+                  <path d="M7 8h10"></path>
+                  <path d="M7 12h6"></path>
+                </svg>
+                <span class="nav-text">Topshiriqlar</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="8" height="8" rx="1"></rect>
+                  <rect x="13" y="3" width="8" height="8" rx="1"></rect>
+                  <rect x="3" y="13" width="8" height="8" rx="1"></rect>
+                  <rect x="13" y="13" width="8" height="8" rx="1"></rect>
+                </svg>
+                <span class="nav-text">Krossword</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Metodlar -->
+          <div class="nav-dropdown ">
+            <button type="button" class="nav-dropdown-toggle " data-dropdown="guestGamesMenu">
+              <span style="display:flex; align-items:center; gap:10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+                  <line x1="6" y1="12" x2="10" y2="12"></line>
+                  <line x1="8" y1="10" x2="8" y2="14"></line>
+                  <circle cx="16" cy="11" r="1"></circle>
+                  <circle cx="18" cy="13" r="1"></circle>
+                </svg>
+                <span class="nav-text">Metodlar</span>
+              </span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu" id="guestGamesMenu">
+              <a href="/game/" class="nav-sublink ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-2-2h-6l-2 2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path>
+                  <circle cx="8.5" cy="13.5" r="1.5"></circle>
+                  <circle cx="15.5" cy="13.5" r="1.5"></circle>
+                </svg>
+                <span class="nav-text">Bepul o'yinlar</span>
+              </a>
+              <a href="/game/online" class="nav-sublink ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 8v4l3 3"></path>
+                </svg>
+                <span class="nav-text">Online o'ynash</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <span class="nav-text">Arqon tortish</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6 9 17 4 12"></path>
+                  <path d="M14 6h6"></path>
+                  <path d="M14 12h6"></path>
+                </svg>
+                <span class="nav-text">To'g'ri | Noto'g'ri</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.28 4.5-3.2 5.72V17a2 2 0 0 1-2 2h-3.6a2 2 0 0 1-2-2v-2.28A7 7 0 0 1 5 9a7 7 0 0 1 7-7Z"></path>
+                  <path d="M9 22h6"></path>
+                </svg>
+                <span class="nav-text">Viktorina</span>
+              </a>
+              <a href="/game/online-quiz" class="nav-sublink ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                  <path d="M9 9h6"></path>
+                  <path d="M9 13h6"></path>
+                  <path d="M9 17h4"></path>
+                </svg>
+                <span class="nav-text">Online Quiz</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="7" cy="7" r="3"></circle>
+                  <circle cx="17" cy="17" r="3"></circle>
+                  <path d="M9.5 9.5l5 5"></path>
+                  <path d="M14.5 9.5l-5 5"></path>
+                </svg>
+                <span class="nav-text">Juftini top</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                  <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                  <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                  <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                </svg>
+                <span class="nav-text">Guruhlash</span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span class="nav-text">Bilet </span>
+              </a>
+              <a href="/login" rel="nofollow" class="nav-sublink guest-auth-link ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7v5l3 3"></path>
+                </svg>
+                <span class="nav-text">Random</span>
+              </a>
+            </div>
+          </div>
+
+          <a href="/plans" class="nav-link ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 12V7a2 2 0 0 0-2-2h-5l-7 7 5 5 7-7z"></path>
+              <circle cx="16" cy="8" r="1"></circle>
+            </svg>
+            <span class="nav-text">Tariflar</span>
+          </a>
+
+          <div style="margin: 8px 0; border-top: 1px solid #e5e7eb;"></div>
+
+          <a href="/login" class="nav-link ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span class="nav-text">Kirish</span>
+          </a>
+
+          <a href="/register" class="nav-link nav-link-register ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <line x1="19" y1="8" x2="19" y2="14"></line>
+              <line x1="22" y1="11" x2="16" y2="11"></line>
+            </svg>
+            <span class="nav-text">Ro'yxatdan o'tish</span>
+          </a>
+        </nav>
+      </aside>
+
+      <div class="main-content no-topbar">
+        <header class="topbar">
+          <button type="button" class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <div class="page-title">
+            Bosh sahifa          </div>
+        </header>
+
+        <main class="container">
+          
+<link rel="stylesheet" href="/src/style.css">
+
+<div class="landing">
+
+    <!-- ===== HERO ===== -->
+    <section class="landing-hero">
+        <div class="landing-grid">
+            <div>
+                <span class="landing-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3 6 6 .9-4.5 4.3 1 6.8-5.5-3-5.5 3 1-6.8L3 8.9 9 8l3-6z"></path>
+                    </svg>
+                    Gamifikatsiya asosidagi ta'lim
+                </span>
+                <h1 class="landing-title">O'qituvchilar uchun ta'limiy o'yinlar platformasi</h1>
+                <p class="landing-text">
+                    16+ interaktiv o'yin, 12+ fan, real vaqtda onlayn raqobat va AI krossword. O'qituvchilar va talabalar uchun eng qiziqarli ta'lim tajribasi!
+                </p>
+                <div class="landing-actions">
+                    <a class="landing-btn primary" href="/game/">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        O'yinlarni boshlash
+                    </a>
+                    <a class="landing-btn ghost" href="/qanday-ishlaydi">Qanday ishlaydi</a>
+                </div>
+            </div>
+            <div class="landing-card">
+                <div>
+                    <span class="landing-card-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"></path>
+                        </svg>
+                        350K+ Aktiv foydalanuvchilar
+                    </span>
+                </div>
+                <div class="landing-stats">
+                    <div class="landing-stat">
+                        <div class="label">O'yinlar</div>
+                        <div class="value">16+</div>
+                    </div>
+                    <div class="landing-stat">
+                        <div class="label">Fanlar</div>
+                        <div class="value">12+</div>
+                    </div>
+                </div>
+                <div class="landing-highlight">
+                    <div class="landing-update-head">
+                        <h3>Yangi funksiyalar</h3>
+                        <span class="landing-update-pill">Yangi</span>
+                    </div>
+                    <div class="landing-update-list">
+                        <a class="landing-update-card" href="/game/online-quiz">
+                            <div class="landing-update-icon" style="background: rgba(124, 58, 237, 0.12); color: #7c3aed;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="14" rx="3"></rect>
+                                    <path d="M8 10h8"></path>
+                                    <path d="M10 14h4"></path>
+                                    <path d="M12 18v2"></path>
+                                </svg>
+                            </div>
+                            <div class="landing-update-body">
+                                <strong>Online Quiz qo'shildi</strong>
+                                <span>PIN, QR kod va avatarlar bilan telefon orqali jonli viktorina boshlang.</span>
+                            </div>
+                            <svg class="landing-update-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <!-- <a class="landing-update-card" href="/library">
+                            <div class="landing-update-icon" style="background: rgba(16, 185, 129, 0.12); color: #059669;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H20v15H5.5A2.5 2.5 0 0 0 3 21.5z"></path>
+                                    <path d="M7 8h8"></path>
+                                    <path d="M7 12h10"></path>
+                                </svg>
+                            </div>
+                            <div class="landing-update-body">
+                                <strong>Kutubxona ochildi</strong>
+                                <span>Kitob va materiallarni toping, saralang, saqlang va platformada o'qib boring.</span>
+                            </div>
+                            <svg class="landing-update-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FANLAR ===== -->
+    <section class="landing-subjects">
+        <div class="landing-section-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            Fanlar
+        </div>
+        <h2 class="landing-section-title">O'z faningizni tanlang</h2>
+        <p class="landing-section-desc">12 ta fan bo'yicha interaktiv testlar. Har bir fan uchun maxsus savol bazasi bilan.</p>
+
+        <div class="landing-subjects-grid">
+            <a class="landing-subject-card" href="/game/arqon/">
+                <div class="landing-subject-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    </svg>
+                </div>
+                <h4>Matematika</h4>
+                <span>Hisoblash mahoratingizni oshiring</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/en/">
+                <div class="landing-subject-icon" style="background: rgba(16,185,129,0.12); color: #10b981;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+                <h4>Ingliz tili</h4>
+                <span>So'z va grammatika</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/ru/">
+                <div class="landing-subject-icon" style="background: rgba(139,92,246,0.12); color: #8b5cf6;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+                <h4>Rus tili</h4>
+                <span>Grammatika va lug'at</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/mother/">
+                <div class="landing-subject-icon" style="background: rgba(244,63,94,0.12); color: #f43f5e;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <h4>Ona tili</h4>
+                <span>Imlo va uslub</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/biology/">
+                <div class="landing-subject-icon" style="background: rgba(34,197,94,0.12); color: #22c55e;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22c-4-3-8-6-8-11a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 5-4 8-8 11z"></path>
+                    </svg>
+                </div>
+                <h4>Biologiya</h4>
+                <span>Tirik tabiat</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/kimyo/">
+                <div class="landing-subject-icon" style="background: rgba(245,158,11,0.12); color: #f59e0b;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 2v8L4 20h16l-6-10V2"></path>
+                        <line x1="8" y1="2" x2="16" y2="2"></line>
+                    </svg>
+                </div>
+                <h4>Kimyo</h4>
+                <span>Elementlar va formulalar</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/fizika/">
+                <div class="landing-subject-icon" style="background: rgba(14,165,233,0.12); color: #0ea5e9;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m8.5-9h-6m-6 0H2.5"></path>
+                    </svg>
+                </div>
+                <h4>Fizika</h4>
+                <span>Qonunlar va formulalar</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/history/">
+                <div class="landing-subject-icon" style="background: rgba(168,85,247,0.12); color: #a855f7;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h4>Tarix</h4>
+                <span>Tarixiy voqealar</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/geography/">
+                <div class="landing-subject-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"></path>
+                    </svg>
+                </div>
+                <h4>Geografiya</h4>
+                <span>Xaritalar va mamlakatlar</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/informatika/">
+                <div class="landing-subject-icon" style="background: rgba(99,102,241,0.12); color: #6366f1;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                </div>
+                <h4>Informatika</h4>
+                <span>Dasturlash asoslari</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/literature/">
+                <div class="landing-subject-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20l9-5-9-5-9 5 9 5z"></path>
+                        <path d="M12 12l9-5-9-5-9 5 9 5z"></path>
+                    </svg>
+                </div>
+                <h4>Adabiyot</h4>
+                <span>Asarlar va mualliflar</span>
+            </a>
+
+            <a class="landing-subject-card" href="/game/turkish/">
+                <div class="landing-subject-icon" style="background: rgba(239,68,68,0.12); color: #ef4444;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3 6 6 .9-4.5 4.3 1 6.8-5.5-3-5.5 3 1-6.8L3 8.9 9 8l3-6z"></path>
+                    </svg>
+                </div>
+                <h4>Turk tili</h4>
+                <span>Lug'at va grammatika</span>
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px;">
+            <a class="landing-btn ghost" href="/game/">
+                Barcha o'yinlarni ko'rish
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== O'YIN TURLARI ===== -->
+    <section class="landing-gametypes">
+        <div class="landing-section-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                <path d="M12 12h.01M8 12h.01M16 12h.01"></path>
+            </svg>
+            O'yin turlari
+        </div>
+        <h2 class="landing-section-title">16+ turli o'yin formati</h2>
+        <p class="landing-section-desc">Raqobat, mahorat, xotira va ijodiy o'yinlar — hammasi bir platformada.</p>
+
+        <div class="landing-gametypes-grid">
+
+            <a class="landing-gametype-card featured" href="/game/arqon/">
+                <div class="landing-gametype-icon" style="background:rgba(37,99,235,0.12);color:#2563eb;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3l4 4-10 10-4-4L17 3z" />
+                        <path d="M7 17l-4 4" />
+                        <path d="M17 7l-6 6" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge team">Jamoaviy</div>
+                <h3>Arqon Tortish</h3>
+                <p>2 jamoa sifatida raqobatlashib, savollarga javob berib arqonni tortib oling. Fanlar bo'yicha savol bazasi.</p>
+                <div class="landing-gametype-tags">
+                    <span>Barcha fanlar</span>
+                    <span>Jamoaviy raqobat</span>
+                    <span>Vaqt limiti</span>
+                </div>
+            </a>
+
+            <a class="landing-gametype-card" href="/game/online">
+                <div class="landing-gametype-icon" style="background:rgba(16,185,129,0.12);color:#10b981;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="2" />
+                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge online">Online</div>
+                <h3>Online o'ynash</h3>
+                <p>Do'stlaringiz bilan real vaqtda o'ynang. QR kod yoki xona kodi orqali tez ulanish.</p>
+                <div class="landing-gametype-tags">
+                    <span>Real vaqt</span>
+                    <span>QR kod</span>
+                </div>
+            </a>
+
+            <a class="landing-gametype-card" href="/game/memory/">
+                <div class="landing-gametype-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge rating">Reyting</div>
+                <h3>Xotira O'yini</h3>
+                <p>Kartochkalarni yodlab oling va jahon reytingida o'z o'rningizni egallang.</p>
+                <div class="landing-gametype-tags">
+                    <span>Leaderboard</span>
+                    <span>Mahorat</span>
+                </div>
+            </a>
+
+            <a class="landing-gametype-card" href="/game/flags/">
+                <div class="landing-gametype-icon" style="background:rgba(6,182,212,0.12);color:#06b6d4;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                        <line x1="4" y1="22" x2="4" y2="15" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge rating">Reyting</div>
+                <h3>Bayroqlar</h3>
+                <p>Davlatlarning bayroqlarini tanib oling. Global reytingga kiring va rekordni sinang.</p>
+                <div class="landing-gametype-tags">
+                    <span>Leaderboard</span>
+                    <span>Geografiya</span>
+                </div>
+            </a>
+
+            <a class="landing-gametype-card" href="/game/colors/">
+                <div class="landing-gametype-icon" style="background:rgba(236,72,153,0.12);color:#ec4899;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="13.5" cy="6.5" r="2.5" />
+                        <circle cx="17.5" cy="10.5" r="2.5" />
+                        <circle cx="8.5" cy="7.5" r="2.5" />
+                        <circle cx="6.5" cy="12.5" r="2.5" />
+                        <path d="M12 20a5 5 0 1 1 0-10c2 0 4 .5 4 2s-2 2-2 4a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-.5" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge rating">Reyting</div>
+                <h3>Ranglar</h3>
+                <p>Rang tanish qobiliyatingizni sinab ko'ring va global reytingga kiring.</p>
+                <div class="landing-gametype-tags">
+                    <span>Leaderboard</span>
+                    <span>Tezlik</span>
+                </div>
+            </a>
+
+
+            <!-- <a class="landing-gametype-card" href="/game/jump">
+                <div class="landing-gametype-icon" style="background:rgba(34,197,94,0.12);color:#22c55e;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="13" cy="4" r="2"/><path d="m9 8 1.5 4.5L14 11l3 5"/><path d="m6 20 4-3 2 3"/><path d="m18 20-2-5"/>
+                    </svg>
+                </div>
+                <h3>Jump O'yini</h3>
+                <p>To'siqlardan sakrab o'ting, reflektor va koordinatsiyangizni rivojlantiring.</p>
+            </a> -->
+
+            <a class="landing-gametype-card" href="/create/crossword">
+                <div class="landing-gametype-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" />
+                        <rect x="9" y="9" width="6" height="6" />
+                        <line x1="9" y1="1" x2="9" y2="4" />
+                        <line x1="15" y1="1" x2="15" y2="4" />
+                        <line x1="9" y1="20" x2="9" y2="23" />
+                        <line x1="15" y1="20" x2="15" y2="23" />
+                        <line x1="20" y1="9" x2="23" y2="9" />
+                        <line x1="20" y1="14" x2="23" y2="14" />
+                        <line x1="1" y1="9" x2="4" y2="9" />
+                        <line x1="1" y1="14" x2="4" y2="14" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge ai">AI</div>
+                <h3>AI Krossword</h3>
+                <p>Mavzu kiriting — sun'iy intellekt avtomatik krossword topshirig'i yaratadi.</p>
+                <div class="landing-gametype-tags">
+                    <span>OpenAI</span>
+                    <span>O'qituvchi uchun</span>
+                </div>
+            </a>
+
+            <a class="landing-gametype-card" href="/create/topic">
+                <div class="landing-gametype-icon" style="background:rgba(236,72,153,0.12);color:#ec4899;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="4" />
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
+                        <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
+                        <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
+                        <line x1="14.83" y1="9.17" x2="18.36" y2="5.64" />
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
+                    </svg>
+                </div>
+                <div class="landing-gametype-badge create">Yaratish</div>
+                <h3>Topshiriqlar</h3>
+                <p>Sinf, fan va mavzu asosida tayyor topshiriqlar yoki loyiha topshirig'ini tez yarating.</p>
+                <div class="landing-gametype-tags">
+                    <span>AI generator</span>
+                    <span>Dars uchun</span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+
+    <div class="landing-features">
+        <div class="landing-feature-card">
+            <div class="landing-feature-icon" style="background: rgba(37,99,235,0.12); color: #2563eb;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+            </div>
+            <h3>Gamifikatsiya tizimi</h3>
+            <p>Ball to'plang, darajalar oching va raqobatchilardan o'zib keting. Har bir to'g'ri javob oldinga olib boradi.</p>
+        </div>
+
+        <div class="landing-feature-card">
+            <div class="landing-feature-icon" style="background: rgba(16,185,129,0.12); color: #10b981;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+            </div>
+            <h3>16+ interaktiv o'yin</h3>
+            <p>Arqon tortish, krossword, xotira, bayroqlar, ranglar, matematika va boshqa ko'plab o'yin turlari mavjud.</p>
+        </div>
+
+        <div class="landing-feature-card">
+            <div class="landing-feature-icon" style="background: rgba(245,158,11,0.12); color: #f59e0b;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 20V10M12 20V4M6 20v-6"></path>
+                </svg>
+            </div>
+            <h3>Reyting tizimi</h3>
+            <p>Xotira, Bayroqlar va Ranglar o'yinlarida global leaderboard. Rekordi siz o'rnating!</p>
+        </div>
+
+        <div class="landing-feature-card">
+            <div class="landing-feature-icon" style="background: rgba(14,165,233,0.12); color: #0ea5e9;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <h3>Online o'yin</h3>
+            <p>Raqibingiz bilan real vaqtda o'ynang. QR kod bilan xonaga bir zumda ulanish.</p>
+        </div>
+
+        <div class="landing-feature-card">
+            <div class="landing-feature-icon" style="background: rgba(139,92,246,0.12); color: #8b5cf6;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                    <path d="M12 2a10 10 0 0 1 10 10H12V2z" opacity="0.4"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </div>
+            <h3>AI Krossword yaratish</h3>
+            <p>Sun'iy intellekt (OpenAI) yordamida istalgan mavzu bo'yicha krossword avtomatik tuziladi.</p>
+        </div>
+
+        <div class="landing-feature-card">
+            <div class="landing-feature-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+            </div>
+            <h3>Maxsus kontent yaratish</h3>
+            <p>Ishchi varaq, mavzu va savollar yarating. Darsga tayyorgarlik vaqtini qisqartiring.</p>
+        </div>
+    </div>
+
+
+    <section class="landing-online">
+        <div class="landing-online-grid">
+            <div>
+                <div class="landing-section-badge" style="color: #0ea5e9;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                    </svg>
+                    Real vaqt · Onlayn
+                </div>
+                <h2 class="landing-section-title">Online O'yin</h2>
+                <p class="landing-section-desc">Arqon tortish o'yinini do'stlaringiz yoki butun sinfingiz bilan real vaqtda o'ynang.</p>
+
+                <ul class="landing-online-features">
+                    <li>QR kod orqali xonaga tez ulanish</li>
+                    <li>Xona kodi yaratish va ulashish</li>
+                    <li>Ko'k va qizil — 2 jamoa formati</li>
+                    <li>Matematika rejimi: oson, o'rta, qiyin</li>
+                    <li>1, 3 yoki 5 daqiqalik o'yin vaqti</li>
+                    <li>Barcha fan bo'yicha savollar</li>
+                </ul>
+
+                <a class="landing-btn primary" href="/game/online">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Onlayn o'yinni boshlash
+                </a>
+            </div>
+
+            <div>
+                <div class="online-demo-card">
+                    <div class="online-demo-header">
+                        <span style="display:flex;align-items:center;gap:6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="6" width="20" height="12" rx="3" />
+                                <line x1="6" y1="12" x2="10" y2="12" />
+                                <line x1="8" y1="10" x2="8" y2="14" />
+                                <circle cx="16" cy="11" r="1" />
+                                <circle cx="18" cy="13" r="1" />
+                            </svg>
+                            Xona kodi
+                        </span>
+                        <span class="online-demo-code">EDU-427</span>
+                    </div>
+                    <div class="online-demo-teams">
+                        <div class="online-demo-team blue">Ko'k jamoa</div>
+                        <div class="online-demo-vs">VS</div>
+                        <div class="online-demo-team red">Qizil jamoa</div>
+                    </div>
+                    <div class="online-demo-rope"></div>
+                    <div class="online-demo-status" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Real vaqtda o'yin davom etmoqda...
+                    </div>
+                    <div class="online-demo-qr">
+                        <div class="online-demo-qr-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="5" y="2" width="14" height="20" rx="2" />
+                                <line x1="12" y1="18" x2="12.01" y2="18" />
+                            </svg>
+                        </div>
+                        <div class="online-demo-qr-text">
+                            <strong style="color:var(--landing-text);">QR kod bilan ulanish</strong><br>
+                            Telefoningiz kamerasini tutib xonaga kiring
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="landing-teachers">
+        <div class="landing-section-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            O'qituvchilar uchun
+        </div>
+        <h2 class="landing-section-title">Darsga tayyorgarlik — tez va oson</h2>
+        <p class="landing-section-desc">Mavzu yarating, ishchi varaq tuzing, AI krossword tuzib o'quvchilarga yuborib o'ynating.</p>
+
+        <div class="landing-tools-grid">
+            <div class="landing-tool-card">
+                <div class="landing-tool-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" />
+                        <rect x="9" y="9" width="6" height="6" />
+                        <line x1="9" y1="1" x2="9" y2="4" />
+                        <line x1="15" y1="1" x2="15" y2="4" />
+                        <line x1="9" y1="20" x2="9" y2="23" />
+                        <line x1="15" y1="20" x2="15" y2="23" />
+                        <line x1="20" y1="9" x2="23" y2="9" />
+                        <line x1="20" y1="14" x2="23" y2="14" />
+                        <line x1="1" y1="9" x2="4" y2="9" />
+                        <line x1="1" y1="14" x2="4" y2="14" />
+                    </svg>
+                </div>
+                <h3>AI Krossword</h3>
+                <p>Mavzu kiriting — OpenAI avtomatik krossword tuzadi. Bir daqiqada tayyor.</p>
+                <div class="landing-tool-limit">Bepul: 3 ta</div>
+            </div>
+
+            <div class="landing-tool-card">
+                <div class="landing-tool-icon" style="background:rgba(37,99,235,0.12);color:#2563eb;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="3" width="16" height="18" rx="3" />
+                        <rect x="7" y="7" width="10" height="3" rx="1" />
+                        <circle cx="8.5" cy="13.5" r="1.2" />
+                        <circle cx="12" cy="13.5" r="1.2" />
+                        <circle cx="15.5" cy="13.5" r="1.2" />
+                    </svg>
+                </div>
+                <h3>Ishchi Varaq</h3>
+                <p>Savollar yozing, o'quvchilar onlayn to'ldirsin. Natijalarni ko'ring.</p>
+                <div class="landing-tool-limit">Bepul: 5 ta</div>
+            </div>
+
+            <div class="landing-tool-card">
+                <div class="landing-tool-icon" style="background:rgba(16,185,129,0.12);color:#10b981;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                </div>
+                <h3>Mavzu Yaratish</h3>
+                <p>O'z savollaringizni kiritib shaxsiy baza yarating, arqon o'yinida ishlating.</p>
+                <div class="landing-tool-limit">Bepul: 3 ta</div>
+            </div>
+
+            <div class="landing-tool-card">
+                <div class="landing-tool-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                </div>
+                <h3>Test Tickets</h3>
+                <p>Raqamlangan savollar bilan test ticketlari yarating va o'quvchilarga bering.</p>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a class="landing-btn ghost" href="/dashboard">
+                Kontent yaratishni boshlash
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+
+    <section class="landing-how">
+        <div class="landing-section-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Qanday ishlaydi
+        </div>
+        <h2 class="landing-section-title">3 qadamda boshlang</h2>
+        <p class="landing-section-desc">O'rganishni boshlash juda oson — atigi bir necha daqiqa kifoya.</p>
+
+        <div class="landing-how-steps">
+            <div class="landing-how-step">
+                <div class="landing-how-number">1</div>
+                <h3>Ro'yxatdan o'ting</h3>
+                <p>Email yoki Google akkaunt orqali tez va oson ro'yxatdan o'ting. Bepul boshlang.</p>
+            </div>
+            <div class="landing-how-step">
+                <div class="landing-how-number">2</div>
+                <h3>O'yin yoki fanni tanlang</h3>
+                <p>16+ o'yin turidan birini, yoki 12+ fan bo'yicha test o'yinini tanlang.</p>
+            </div>
+            <div class="landing-how-step">
+                <div class="landing-how-number">3</div>
+                <h3>O'ynang va o'rganing</h3>
+                <p>Savolga javob bering, ball to'plang, reyting jadvaliga kiring va bilimingizni mustahkamlang.</p>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a class="landing-btn ghost" href="/qanday-ishlaydi">
+                Batafsil ma'lumot
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== STATISTIKA ===== -->
+    <section class="landing-metrics">
+        <div style="text-align: center;">
+            <div class="landing-section-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 20V10M12 20V4M6 20v-6"></path>
+                </svg>
+                Raqamlarda
+            </div>
+            <h2 class="landing-section-title">Platformamiz natijalari</h2>
+        </div>
+        <div class="landing-metrics-grid">
+            <div class="landing-metric">
+                <div class="number">350K+</div>
+                <div class="label">Aktiv foydalanuvchi</div>
+            </div>
+            <div class="landing-metric">
+                <div class="number">16+</div>
+                <div class="label">Interaktiv o'yinlar</div>
+            </div>
+            <div class="landing-metric">
+                <div class="number">12+</div>
+                <div class="label">Fanlar</div>
+            </div>
+            <div class="landing-metric">
+                <div class="number">17 000 000</div>
+                <div class="label">Jami tashriflar</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOYDALANUVCHI FIKRLARI ===== -->
+    <section class="landing-testimonials">
+        <div class="landing-section-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Fikrlar
+        </div>
+        <h2 class="landing-section-title">Foydalanuvchilar nima deydi</h2>
+        <p class="landing-section-desc">O'quvchilar, o'qituvchilar va ota-onalarning platformamiz haqidagi fikrlari.</p>
+
+        <div class="landing-testimonials-grid">
+            <div class="landing-quote">
+                <div class="landing-quote-text">"Arqon tortish o'yini bizning sinfimizda eng sevimli faoliyatga aylandi. O'quvchilar savollarga zavq bilan javob berishmoqda!"</div>
+                <div class="landing-quote-author">
+                    <div class="landing-quote-avatar" style="background: #2563eb;">M</div>
+                    <div>
+                        <div class="landing-quote-name">Madina</div>
+                        <div class="landing-quote-role">Biologiya o'qituvchisi</div>
+                    </div>
+                </div>
+            </div>
+            <div class="landing-quote">
+                <div class="landing-quote-text">"Bayroqlar o'yinida reyting jadvalida 1-o'rinni egallashga harakat qilyapman. Geografiyani shu orqali yaxshi o'rgandim!"</div>
+                <div class="landing-quote-author">
+                    <div class="landing-quote-avatar" style="background: #10b981;">A</div>
+                    <div>
+                        <div class="landing-quote-name">Aziz, 15 yosh</div>
+                        <div class="landing-quote-role">O'quvchi</div>
+                    </div>
+                </div>
+            </div>
+            <div class="landing-quote">
+                <div class="landing-quote-text">"AI krossword funksiyasi ajoyib! Mavzu yozdim — bir daqiqada tayyor krossword chiqdi. Dars tayyorgarligim juda tezlashdi."</div>
+                <div class="landing-quote-author">
+                    <div class="landing-quote-avatar" style="background: #8b5cf6;">S</div>
+                    <div>
+                        <div class="landing-quote-name">Sarvar</div>
+                        <div class="landing-quote-role">Tarix o'qituvchisi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="landing-faq">
+        <div class="landing-section-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            FAQ
+        </div>
+        <h2 class="landing-section-title">Ko'p beriladigan savollar</h2>
+        <p class="landing-section-desc">EduGames.uz'dan foydalanish, o'yinlar, tariflar va o'qituvchilar uchun imkoniyatlar bo'yicha eng muhim savollarga javoblar.</p>
+
+        <div class="landing-faq-list">
+            <details class="landing-faq-item">
+                <summary>EduGames.uz qanday platforma?</summary>
+                <div class="landing-faq-answer">EduGames.uz — o'yin orqali ta'lim berishga mo'ljallangan platforma. 16+ interaktiv o'yin, 12+ fan bo'yicha test, real vaqtda onlayn raqobat va AI krossword yaratish imkoniyatlari mavjud.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Qaysi o'yinlar mavjud?</summary>
+                <div class="landing-faq-answer">Platformada Arqon Tortish (jamoaviy), Online o'yin (real vaqtda), Xotira, Bayroqlar, Ranglar, Matematika va 12 ta fan bo'yicha quiz o'yinlari mavjud. Barcha o'yinlar va fanlar "O'yinlar" bo'limida joylashgan.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Online o'yin qanday ishlaydi?</summary>
+                <div class="landing-faq-answer">Xona yarating — kod yoki QR kod hosil bo'ladi. Do'stlaringiz shu kod bilan xonaga kiradi. 2 jamoa — Ko'k va Qizil — real vaqtda savollarga javob berib arqon tortishadi. Matematika rejimida qiyinlik darajasini ham tanlashingiz mumkin.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Ro'yxatdan o'tish va kirish qanday amalga oshadi?</summary>
+                <div class="landing-faq-answer">Email orqali ro'yxatdan o'tib tasdiqlash bosqichini o'tasiz. Bundan tashqari Google akkaunt orqali bir klikda tez kirish ham mavjud. Ro'yxatdan o'tgach, dashboard orqali o'yin va materiallarga o'tasiz.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Platforma bepulmi yoki pullikmi?</summary>
+                <div class="landing-faq-answer">Asosiy o'yinlar va funksiyalardan bepul foydalanish mumkin. Kontent yaratishda (krossword, ishchi varaq, mavzu) bepul limitlar mavjud. Kengaytirilgan imkoniyatlar uchun qulay obuna paketlari mavjud — "Tariflar" bo'limiga qarang.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>O'qituvchilar uchun qanday imkoniyatlar bor?</summary>
+                <div class="landing-faq-answer">O'qituvchilar AI krossword, ishchi varaq va mavzu yaratishi mumkin. Shuningdek, arqon o'yini uchun o'z savollar bazasini tuzib, sinf bilan birga o'ynashi mumkin. Online o'yin rejimi ham sinf uchun ideal.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Reyting tizimi qanday ishlaydi?</summary>
+                <div class="landing-faq-answer">Xotira, Bayroqlar va Ranglar o'yinlarida global leaderboard mavjud. O'yin natijangiz avtomatik reyting jadvaliga tushadi. Rekordi kim qo'yganini ko'rib, uni yangilashga harakat qilishingiz mumkin.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>To'lov va obuna jarayoni qanday ishlaydi?</summary>
+                <div class="landing-faq-answer">Tarif tanlash va to'lovlar maxsus bo'lim orqali amalga oshadi. Click to'lov tizimi qo'llaniladi. Obuna holati va amal qilish muddati akkaunt ichida ko'rinadi, muddat tugashidan oldin yangilash imkoniyati mavjud.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Muammo yoki savol bo'lsa qayerga murojaat qilaman?</summary>
+                <div class="landing-faq-answer">Platformadagi Support bo'limi orqali murojaat yuborishingiz mumkin. Har bir murojaat uchun alohida ticket ochiladi, fayl biriktirish imkoniyati ham bor. Ko'rib chiqish holatini akkaunt ichida kuzatib borasiz.</div>
+            </details>
+            <details class="landing-faq-item">
+                <summary>Qaysi qurilmalarda ishlaydi?</summary>
+                <div class="landing-faq-answer">EduGames.uz zamonaviy brauzerlarda telefon, planshet va kompyuterlarda ishlaydi. Barqaror internet aloqasi bo'lsa, platformadan to'liq va qulay foydalanish mumkin.</div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="landing-cta">
+        <h2>Hoziroq o'rganishni boshlang!</h2>
+        <p>350K+ aktiv foydalanuvchiga qo'shiling. Bepul ro'yxatdan o'ting va o'yin orqali bilimingizni oshiring.</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a class="landing-btn primary" href="/register">
+                Bepul ro'yxatdan o'tish
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+            <a class="landing-btn ghost" style="background:transparent; border-color:rgba(255,255,255,0.4); color:#fff;" href="/game/">
+                O'yinlarni ko'rish
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="landing-footer">
+        <div class="landing-footer-grid">
+            <div>
+                <div class="landing-footer-brand">
+                    <img src="/edugames-white.png" alt="EduGames" style="width: auto; height: 48px;" />
+                </div>
+                <p style="color:#94a3b8; margin-top:12px; font-size:14px;">
+                    Bolalar va talabalar uchun o'yin orqali o'rganish platformasi.
+                </p>
+                <div class="landing-footer-social">
+                    <a class="landing-social-link" href="https://t.me/edugameschat" target="_blank" rel="noopener" aria-label="Telegram">
+                        <svg viewBox="0 0 496 512" fill="currentColor" aria-hidden="true">
+                            <path d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z" />
+                        </svg>
+                    </a>
+                    <a class="landing-social-link" href="https://instagram.com/norinjon_boltaboev" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm10 2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-5 3.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2a1.8 1.8 0 1 0 1.8 1.8A1.8 1.8 0 0 0 12 10.2zm4.4-3.3a.9.9 0 1 1-.9-.9.9.9 0 0 1 .9.9z" />
+                        </svg>
+                    </a>
+                    <a class="landing-social-link" href="https://www.youtube.com/@norinjonboltaboev7874" target="_blank" rel="noopener" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.5.4a3 3 0 0 0-2.1 2.1A31.2 31.2 0 0 0 2 12a31.2 31.2 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.4 7.5.4 7.5.4s5.8 0 7.5-.4a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 22 12a31.2 31.2 0 0 0-.4-4.8zM10 15.2V8.8L15.2 12 10 15.2z" />
+                        </svg>
+                    </a>
+                    <a class="landing-social-link" href="https://www.facebook.com/norinjonboltaboev1" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M13.4 9.2V7.3c0-.8.5-1 1-1h1.8V3.5h-2.5c-2.6 0-4 1.6-4 4.1v1.6H7.5v2.7h2.2V21h2.7v-9.1h2.2l.4-2.7h-2.6z" />
+                        </svg>
+                    </a>
+                    <a class="landing-social-link" href="https://x.com/usmir_n" target="_blank" rel="noopener" aria-label="X">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M18.244 2H21.552L14.33 10.26L22.823 22H16.176L10.97 14.894L4.74 22H1.43L9.16 13.15L1 2H7.82L12.53 8.46L18.244 2ZM17.08 20H18.91L6.82 4H4.85L17.08 20Z" />
+                        </svg>
+                    </a>
+
+                </div>
+            </div>
+            <div>
+                <div class="landing-footer-title">Tezkor havolalar</div>
+                <div class="landing-footer-links">
+                    <a href="/">Bosh sahifa</a>
+                    <a href="/game/">Bepul o'yinlar</a>
+                    <a href="/game/online">Onlayn o'yin</a>
+                    <a href="/qanday-ishlaydi">Qanday ishlaydi</a>
+                    <a href="/haqida">Haqida</a>
+                    <a href="/aloqa">Aloqa</a>
+                </div>
+            </div>
+            <div>
+                <div class="landing-footer-title">O'yinlar</div>
+                <div class="landing-footer-links">
+                    <a href="/game/arqon/">Matematika</a>
+                    <a href="/game/memory/">Xotira O'yini</a>
+                    <a href="/game/flags/">Bayroqlar</a>
+                    <a href="/game/colors/">Ranglar</a>
+                </div>
+            </div>
+            <div>
+                <div class="landing-footer-title">Huquqiy</div>
+                <div class="landing-footer-links">
+                    <a href="/maxfiylik-siyosati">Maxfiylik siyosati</a>
+                    <a href="/foydalanish-shartlari">Foydalanish shartlari</a>
+                </div>
+            </div>
+        </div>
+        <div class="landing-footer-bottom">
+            <span>&copy; 2025 - 2026 EduGames.uz. Barcha huquqlar himoyalangan.</span>
+            <span>Aloqa: edugamesuz1@gmail.com</span>
+        </div>
+    </footer>
+</div>
+        </main>
+      </div>
+    </div>
+  
+      
+<div
+  id="g_id_onload"
+  data-client_id="186150081848-0ntog4r9r2qubupj734evdtta3vhk85q.apps.googleusercontent.com"
+  data-login_uri="https://edugames.uz/api/login/google/back.php"
+  data-auto_prompt="true"
+  data-cancel_on_tap_outside="false"
+  data-context="signin"
+  data-itp_support="true"
+  data-nonce="53e2382a4fc5958f798eee6888d5883a"></div>
+<script src="https://accounts.google.com/gsi/client?hl=uz" async defer></script>
+  
+  <script>
+    (function() {
+      'use strict';
+
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const logoutOverlay = document.getElementById('logoutOverlay');
+      const sidebar = document.getElementById('sidebar');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const appWrapper = document.querySelector('.app-wrapper');
+      const notifBtn = document.getElementById('notifBtn');
+      const notifDropdown = document.getElementById('notifDropdown');
+      const notifCount = document.getElementById('notifCount');
+      const notifList = document.getElementById('notifList');
+      const notifMarkAll = document.getElementById('notifMarkAll');
+      const logoutLink = document.getElementById('logoutLink');
+      const logoutModal = document.getElementById('logoutModal');
+      const cancelLogout = document.getElementById('cancelLogout');
+      const confirmLogout = document.getElementById('confirmLogout');
+      const countryPromptDialog = document.getElementById('countryPromptDialog');
+      const countryPromptForm = document.getElementById('countryPromptForm');
+      const countryPromptSearch = document.getElementById('countryPromptSearch');
+      const countryPromptSelect = document.getElementById('countryPromptSelect');
+      const countryPromptSave = document.getElementById('countryPromptSave');
+      const countryPromptLater = document.getElementById('countryPromptLater');
+      const countryPromptClose = document.getElementById('countryPromptClose');
+      const countryPromptStatus = document.getElementById('countryPromptStatus');
+      const browserNotifPrompt = document.getElementById('browserNotifPrompt');
+      const browserNotifPromptAllow = document.getElementById('browserNotifPromptAllow');
+      const browserNotifPromptLater = document.getElementById('browserNotifPromptLater');
+      const browserNotifPromptStatus = document.getElementById('browserNotifPromptStatus');
+      const notifDetailBase = '/notifications';
+      const countryPromptSnoozeUrl = '/settings/country-prompt/snooze';
+      const countryPromptReturnTo = "/dashboard";
+      const wsTokenRefreshUrl = '/api/game-online/token';
+      const wsSocketUrl = "";
+      const wsSocketPath = "/socket.io";
+      const wsCsrfToken = '26cbc8de367d3450c4f3efedd76e7cf730ebc34c76d9b2e1421985be0c59d01e';
+      const browserNotifPromptKey = 'edu_browser_notification_prompt_until';
+      const browserNotifPromptSnoozeMs = 1000 * 60 * 60 * 24 * 3;
+      let wsAuthToken = "";
+
+      let isNotifOpen = false;
+      let notifSocket = null;
+      let notifSound;
+      let notifStreamSynced = false;
+      let notifLoadingPromise = null;
+      let notifTokenRefreshing = null;
+      const notifCache = {
+        items: [],
+        unread: 0,
+        lastId: 0
+      };
+
+      const sidebarKey = 'edu_sidebar_collapsed';
+      if (appWrapper && localStorage.getItem(sidebarKey) === '1') {
+        appWrapper.classList.add('sidebar-collapsed');
+      }
+
+      if (sidebarToggle && appWrapper) {
+        sidebarToggle.addEventListener('click', function() {
+          appWrapper.classList.toggle('sidebar-collapsed');
+          const isCollapsed = appWrapper.classList.contains('sidebar-collapsed');
+          localStorage.setItem(sidebarKey, isCollapsed ? '1' : '0');
+        });
+      }
+
+      if (mobileMenuBtn && sidebar && mobileOverlay) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isOpen = sidebar.classList.contains('mobile-open');
+          if (isOpen) {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+          } else {
+            sidebar.classList.add('mobile-open');
+            mobileOverlay.classList.add('active');
+          }
+        });
+      }
+
+      if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', function() {
+          if (sidebar) sidebar.classList.remove('mobile-open');
+          mobileOverlay.classList.remove('active');
+        });
+      }
+
+      if (sidebar) {
+        const navLinks = sidebar.querySelectorAll('.nav-link:not(.logout), .nav-sublink');
+        navLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+            if (sidebar.classList.contains('mobile-open')) {
+              sidebar.classList.remove('mobile-open');
+              if (mobileOverlay) mobileOverlay.classList.remove('active');
+            }
+          });
+        });
+
+        const dropdownToggles = sidebar.querySelectorAll('.nav-dropdown-toggle');
+        dropdownToggles.forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const parent = btn.closest('.nav-dropdown');
+            if (!parent) return;
+            const isOpen = parent.classList.contains('open');
+            sidebar.querySelectorAll('.nav-dropdown').forEach(function(drop) {
+              if (drop !== parent) drop.classList.remove('open');
+            });
+            if (isOpen) {
+              parent.classList.remove('open');
+            } else {
+              parent.classList.add('open');
+            }
+          });
+        });
+      }
+
+      if (logoutLink && logoutModal && logoutOverlay) {
+        logoutLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          logoutModal.classList.add('active');
+          logoutOverlay.classList.add('active');
+          if (sidebar && sidebar.classList.contains('mobile-open')) {
+            sidebar.classList.remove('mobile-open');
+            if (mobileOverlay) mobileOverlay.classList.remove('active');
+          }
+        });
+      }
+
+      if (cancelLogout && logoutModal && logoutOverlay) {
+        cancelLogout.addEventListener('click', function() {
+          logoutModal.classList.remove('active');
+          logoutOverlay.classList.remove('active');
+        });
+      }
+
+      if (logoutOverlay && logoutModal) {
+        logoutOverlay.addEventListener('click', function() {
+          logoutModal.classList.remove('active');
+          logoutOverlay.classList.remove('active');
+        });
+      }
+
+      if (confirmLogout) {
+        confirmLogout.addEventListener('click', function() {
+          window.location.href = '/logout';
+        });
+      }
+
+      if (window.EduCountryAutocomplete && countryPromptSearch && countryPromptSelect) {
+        window.EduCountryAutocomplete.enhance({
+          searchInput: countryPromptSearch,
+          selectEl: countryPromptSelect,
+          placeholderText: 'Davlatni tanlang',
+          noResultsText: 'Natija topilmadi',
+          onChange: function() {
+            setCountryPromptStatus('');
+            updateCountryPromptSaveState();
+          }
+        });
+      }
+
+      function setCountryPromptStatus(message) {
+        if (!countryPromptStatus) return;
+        const text = String(message || '').trim();
+        countryPromptStatus.textContent = text;
+        countryPromptStatus.hidden = text === '';
+      }
+
+      function updateCountryPromptSaveState() {
+        if (!countryPromptSave || !countryPromptSelect) return;
+        countryPromptSave.disabled = String(countryPromptSelect.value || '').trim() === '';
+      }
+
+      function openCountryPrompt() {
+        if (!countryPromptDialog) return;
+        if (typeof countryPromptDialog.showModal === 'function') {
+          if (!countryPromptDialog.open) {
+            countryPromptDialog.showModal();
+          }
+        } else {
+          countryPromptDialog.setAttribute('open', 'open');
+        }
+        if (countryPromptSearch || countryPromptSelect) {
+          window.setTimeout(function() {
+            (countryPromptSearch || countryPromptSelect).focus();
+          }, 0);
+        }
+      }
+
+      function closeCountryPrompt() {
+        if (!countryPromptDialog) return;
+        if (typeof countryPromptDialog.close === 'function' && countryPromptDialog.open) {
+          countryPromptDialog.close();
+          return;
+        }
+        countryPromptDialog.removeAttribute('open');
+      }
+
+      async function snoozeCountryPrompt() {
+        if (!countryPromptDialog) return;
+        if (countryPromptLater) countryPromptLater.disabled = true;
+        if (countryPromptClose) countryPromptClose.disabled = true;
+        setCountryPromptStatus('');
+
+        try {
+          const fd = new FormData();
+          fd.append('csrf_token', wsCsrfToken);
+          fd.append('return_to', countryPromptReturnTo || '/dashboard');
+
+          const res = await fetch(countryPromptSnoozeUrl, {
+            method: 'POST',
+            body: fd,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+          });
+
+          const data = await res.json().catch(function() {
+            return {};
+          });
+
+          if (!res.ok || !data.ok) {
+            throw new Error(data && data.error ? data.error : 'Keyinroq eslatishni saqlab bo\'lmadi.');
+          }
+
+          closeCountryPrompt();
+        } catch (error) {
+          setCountryPromptStatus(error && error.message ? error.message : 'Keyinroq eslatishni saqlab bo\'lmadi.');
+        } finally {
+          if (countryPromptLater) countryPromptLater.disabled = false;
+          if (countryPromptClose) countryPromptClose.disabled = false;
+        }
+      }
+
+      if (countryPromptSelect) {
+        updateCountryPromptSaveState();
+        countryPromptSelect.addEventListener('change', function() {
+          setCountryPromptStatus('');
+          updateCountryPromptSaveState();
+        });
+      }
+
+      if (countryPromptForm) {
+        countryPromptForm.addEventListener('submit', function(event) {
+          if (!countryPromptSelect || String(countryPromptSelect.value || '').trim() === '') {
+            event.preventDefault();
+            setCountryPromptStatus('Davlatni tanlang.');
+            updateCountryPromptSaveState();
+            return;
+          }
+
+          if (countryPromptSave) {
+            countryPromptSave.disabled = true;
+            countryPromptSave.textContent = 'Saqlanmoqda...';
+          }
+        });
+      }
+
+      if (countryPromptLater) {
+        countryPromptLater.addEventListener('click', function() {
+          void snoozeCountryPrompt();
+        });
+      }
+
+      if (countryPromptClose) {
+        countryPromptClose.addEventListener('click', function() {
+          void snoozeCountryPrompt();
+        });
+      }
+
+      if (countryPromptDialog) {
+        countryPromptDialog.addEventListener('cancel', function(event) {
+          event.preventDefault();
+          void snoozeCountryPrompt();
+        });
+        openCountryPrompt();
+      }
+
+      function readBrowserNotifPromptSnooze() {
+        try {
+          return Number(localStorage.getItem(browserNotifPromptKey) || 0);
+        } catch (e) {
+          return 0;
+        }
+      }
+
+      function writeBrowserNotifPromptSnooze(until) {
+        try {
+          if (until > 0) {
+            localStorage.setItem(browserNotifPromptKey, String(until));
+          } else {
+            localStorage.removeItem(browserNotifPromptKey);
+          }
+        } catch (e) {}
+      }
+
+      function setBrowserNotifPromptStatus(message) {
+        if (!browserNotifPromptStatus) return;
+        const text = String(message || '').trim();
+        browserNotifPromptStatus.textContent = text;
+        browserNotifPromptStatus.hidden = text === '';
+      }
+
+      function closeBrowserNotifPrompt() {
+        if (!browserNotifPrompt) return;
+        browserNotifPrompt.hidden = true;
+        setBrowserNotifPromptStatus('');
+      }
+
+      function browserNotificationsSupported() {
+        return Boolean(browserNotifPrompt && window.isSecureContext && 'Notification' in window);
+      }
+
+      function refreshBrowserNotifPrompt() {
+        if (!browserNotifPrompt) return;
+
+        if (!browserNotificationsSupported()) {
+          closeBrowserNotifPrompt();
+          return;
+        }
+
+        if (Notification.permission !== 'default') {
+          writeBrowserNotifPromptSnooze(0);
+          closeBrowserNotifPrompt();
+          return;
+        }
+
+        if (readBrowserNotifPromptSnooze() > Date.now()) {
+          closeBrowserNotifPrompt();
+          return;
+        }
+
+        browserNotifPrompt.hidden = false;
+      }
+
+      function snoozeBrowserNotifPrompt() {
+        writeBrowserNotifPromptSnooze(Date.now() + browserNotifPromptSnoozeMs);
+        closeBrowserNotifPrompt();
+      }
+
+      async function requestBrowserNotifPermission() {
+        if (!browserNotifPromptAllow || !browserNotificationsSupported()) return;
+
+        browserNotifPromptAllow.disabled = true;
+        if (browserNotifPromptLater) browserNotifPromptLater.disabled = true;
+        setBrowserNotifPromptStatus('Brauzer oynasidagi ruxsat so\'rovini tasdiqlang.');
+
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            writeBrowserNotifPromptSnooze(0);
+            closeBrowserNotifPrompt();
+            return;
+          }
+
+          snoozeBrowserNotifPrompt();
+        } catch (error) {
+          setBrowserNotifPromptStatus('Ruxsat so\'rovini ochib bo\'lmadi. Keyinroq yana urinib ko\'ring.');
+        } finally {
+          browserNotifPromptAllow.disabled = false;
+          if (browserNotifPromptLater) browserNotifPromptLater.disabled = false;
+        }
+      }
+
+      if (browserNotifPromptAllow) {
+        browserNotifPromptAllow.addEventListener('click', function() {
+          void requestBrowserNotifPermission();
+        });
+      }
+
+      if (browserNotifPromptLater) {
+        browserNotifPromptLater.addEventListener('click', function() {
+          snoozeBrowserNotifPrompt();
+        });
+      }
+
+      window.addEventListener('focus', refreshBrowserNotifPrompt);
+      refreshBrowserNotifPrompt();
+
+      if (notifBtn && notifDropdown) {
+        notifBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          isNotifOpen = !isNotifOpen;
+          notifDropdown.style.display = isNotifOpen ? 'block' : 'none';
+          if (isNotifOpen) {
+            loadNotifications({
+              force: false,
+              delta: false
+            });
+          } else {
+
+          }
+        });
+      }
+
+      if (notifMarkAll) {
+        notifMarkAll.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          markAllRead();
+        });
+      }
+
+      document.addEventListener('click', function(e) {
+        if (isNotifOpen && notifDropdown && !notifDropdown.contains(e.target) && e.target !== notifBtn && !notifBtn.contains(e.target)) {
+          isNotifOpen = false;
+          notifDropdown.style.display = 'none';
+
+        }
+      });
+
+      function toRecipientId(item) {
+        return Number(item && item.id ? item.id : 0);
+      }
+
+      function mergeNotificationItems(incomingItems, isDelta) {
+        const incoming = Array.isArray(incomingItems) ? incomingItems : [];
+        const current = Array.isArray(notifCache.items) ? notifCache.items : [];
+
+        const currentById = new Map();
+        current.forEach(function(item) {
+          const rid = toRecipientId(item);
+          if (rid > 0) currentById.set(rid, item);
+        });
+
+        const nextById = new Map();
+        incoming.forEach(function(item) {
+          const rid = toRecipientId(item);
+          if (rid <= 0) return;
+          const prev = currentById.get(rid);
+          if (prev && prev.is_read && !item.is_read) {
+            item = Object.assign({}, item, {
+              is_read: true
+            });
+          }
+          nextById.set(rid, item);
+        });
+
+        if (isDelta) {
+          current.forEach(function(item) {
+            const rid = toRecipientId(item);
+            if (rid <= 0 || nextById.has(rid)) return;
+            nextById.set(rid, item);
+          });
+        }
+
+        notifCache.items = Array.from(nextById.values());
+        sortNotificationCache();
+      }
+
+      async function loadNotifications(opts) {
+        if (!notifList) return;
+        const options = opts || {};
+        if (!options.force && !options.delta && notifCache.items.length) {
+          renderNotifications(notifCache.items);
+          updateCount(notifCache.unread);
+          return;
+        }
+
+        try {
+          const url = new URL('/api/notifications_feed.php', window.location.origin);
+          if (options.delta && notifCache.lastId > 0) {
+            url.searchParams.set('after_id', String(notifCache.lastId));
+            url.searchParams.set('limit', '20');
+          }
+          const res = await fetch(url.toString(), {
+            cache: 'no-store'
+          });
+          const data = await res.json();
+          if (data.ok) {
+            mergeNotificationItems(data.items || [], options.delta === true);
+            notifCache.unread = Math.max(0, Number(data.unread || 0));
+            notifCache.lastId = Math.max(notifCache.lastId, Number(data.last_id || 0));
+            if (notifSocket && notifSocket.connected && notifCache.lastId > 0) {
+              notifSocket.emit('notifications:ack', {
+                last_id: notifCache.lastId
+              });
+            }
+
+            renderNotifications(notifCache.items);
+            updateCount(notifCache.unread);
+          }
+        } catch {
+          notifList.innerHTML = `
+                        <div class="notif-empty">
+                            <div class="notif-empty-icon">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <p class="notif-empty-text">Xatolik yuz berdi</p>
+                        </div>
+                    `;
+        }
+      }
+
+      function buildNotifUrl(n) {
+        const custom = String(n.link || '').trim();
+        if (custom) return custom;
+        const nid = Number(n.notification_id || 0);
+        if (!nid) return notifDetailBase;
+        const slug = String(n.slug || '').trim();
+        return `${notifDetailBase}/${nid}${slug ? '-' + slug : ''}`;
+      }
+
+      function sortNotificationCache() {
+        const sorted = (notifCache.items || []).slice().sort(function(a, b) {
+          return Number(b.id || 0) - Number(a.id || 0);
+        });
+        notifCache.items = sorted.slice(0, 20);
+      }
+
+      function renderNotifications(items) {
+        if (!items || items.length === 0) {
+          notifList.innerHTML = `
+                        <div class="notif-empty">
+                            <div class="notif-empty-icon">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                            </div>
+                            <p class="notif-empty-text">Bildirishnomalar yo'q</p>
+                        </div>
+                    `;
+          return;
+        }
+
+        const typeConfig = {
+          success: {
+            icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>',
+            class: 'notif-icon-success'
+          },
+          warning: {
+            icon: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+            class: 'notif-icon-warning'
+          },
+          error: {
+            icon: '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>',
+            class: 'notif-icon-error'
+          },
+          info: {
+            icon: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>',
+            class: 'notif-icon-info'
+          }
+        };
+
+        notifList.innerHTML = items.map(function(n) {
+          const config = typeConfig[n.type] || typeConfig.info;
+          const time = formatTime(n.created_at);
+          const detailUrl = buildNotifUrl(n);
+          const msg = n.message ? cleanPreviewHtml(n.message) : '';
+          return `
+                        <a href="${detailUrl}" class="notif-item ${!n.is_read ? 'unread' : ''}" data-recipient-id="${Number(n.id || 0)}">
+                            <div class="notif-item-content">
+                                <div class="notif-icon-wrapper ${config.class}">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        ${config.icon}
+                                    </svg>
+                                </div>
+                                <div class="notif-body">
+                                    <div class="notif-title">${escapeHtml(n.title)}</div>
+                                    ${msg ? `<div class="notif-msg">${msg}</div>` : ''}
+                                    <div class="notif-meta">
+                                        <div class="notif-time">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            <span>${time}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+        }).join('');
+        ensureNotifContrast(notifList);
+      }
+
+      function updateCount(count) {
+        if (notifCount) {
+          if (count > 0) {
+            notifCount.textContent = count > 9 ? '9+' : count;
+            notifCount.style.display = 'flex';
+            if (notifBtn) notifBtn.classList.add('has-unread');
+          } else {
+            notifCount.style.display = 'none';
+            if (notifBtn) notifBtn.classList.remove('has-unread');
+          }
+        }
+        if (notifMarkAll) {
+          notifMarkAll.style.display = count > 0 ? 'inline-flex' : 'none';
+        }
+      }
+
+      function markNotifRead(recipientId) {
+        if (!recipientId) return;
+        const url = '/api/notification_read.php';
+        const fd = new FormData();
+        fd.append('csrf_token', '26cbc8de367d3450c4f3efedd76e7cf730ebc34c76d9b2e1421985be0c59d01e');
+        fd.append('recipient_id', String(recipientId));
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(url, fd);
+        } else {
+          fetch(url, {
+            method: 'POST',
+            body: fd,
+            keepalive: true,
+            credentials: 'same-origin'
+          }).catch(function() {});
+        }
+      }
+
+      function markNotifLocal(recipientId) {
+        if (!recipientId) return;
+        let changed = false;
+        notifCache.items = (notifCache.items || []).map(function(n) {
+          if (Number(n.id || 0) === recipientId && !n.is_read) {
+            n.is_read = true;
+            changed = true;
+          }
+          return n;
+        });
+        if (changed && notifCache.unread > 0) {
+          notifCache.unread = Math.max(0, notifCache.unread - 1);
+          updateCount(notifCache.unread);
+        }
+      }
+
+      async function markAllRead() {
+        if (!notifMarkAll) return;
+        notifMarkAll.disabled = true;
+        const fd = new FormData();
+        fd.append('csrf_token', '26cbc8de367d3450c4f3efedd76e7cf730ebc34c76d9b2e1421985be0c59d01e');
+        try {
+          const res = await fetch('/api/notifications_mark_all.php', {
+            method: 'POST',
+            body: fd
+          });
+          const data = await res.json();
+          if (data.ok) {
+            notifCache.unread = 0;
+            notifCache.items = (notifCache.items || []).map(function(n) {
+              n.is_read = true;
+              return n;
+            });
+            updateCount(0);
+            if (isNotifOpen) renderNotifications(notifCache.items);
+          }
+        } catch (err) {} finally {
+          notifMarkAll.disabled = false;
+        }
+      }
+
+      function formatTime(dateStr) {
+        const date = new Date(dateStr);
+        const diff = Math.floor((new Date() - date) / 1000);
+        if (diff < 60) return 'Hozir';
+        if (diff < 3600) return Math.floor(diff / 60) + ' daqiqa oldin';
+        if (diff < 86400) return Math.floor(diff / 3600) + ' soat oldin';
+        const days = Math.floor(diff / 86400);
+        if (days < 30) return days + ' kun oldin';
+        const months = Math.floor(days / 30);
+        if (months < 12) return months + ' oy oldin';
+        return Math.floor(months / 12) + ' yil oldin';
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+      }
+
+      function cleanPreviewHtml(html) {
+        if (!html) return '';
+        return String(html)
+          .replace(/<p>\s*(?:<br\s*\/?>)?\s*<\/p>/gi, '')
+          .replace(/<(strong|b)>\s*<\/\\1>/gi, '');
+      }
+
+      function parseRgb(value) {
+        if (!value) return null;
+        const m = value.match(/rgba?\(([^)]+)\)/i);
+        if (!m) return null;
+        const parts = m[1].split(',').map(function(v) {
+          return Number(String(v).trim());
+        });
+        if (parts.length < 3) return null;
+        return {
+          r: parts[0],
+          g: parts[1],
+          b: parts[2]
+        };
+      }
+
+      function luminance(rgb) {
+        function channel(v) {
+          v = v / 255;
+          return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        }
+        return 0.2126 * channel(rgb.r) + 0.7152 * channel(rgb.g) + 0.0722 * channel(rgb.b);
+      }
+
+      function contrast(a, b) {
+        const l1 = luminance(a);
+        const l2 = luminance(b);
+        const hi = Math.max(l1, l2);
+        const lo = Math.min(l1, l2);
+        return (hi + 0.05) / (lo + 0.05);
+      }
+
+      function ensureNotifContrast(container) {
+        if (!container) return;
+        const spans = container.querySelectorAll('span[style*="background-color"]');
+        spans.forEach(function(span) {
+          const cs = getComputedStyle(span);
+          const bg = parseRgb(cs.backgroundColor);
+          const fg = parseRgb(cs.color);
+          if (!bg) return;
+          const black = {
+            r: 17,
+            g: 24,
+            b: 39
+          };
+          const white = {
+            r: 255,
+            g: 255,
+            b: 255
+          };
+          const currentContrast = fg ? contrast(fg, bg) : 0;
+          const blackContrast = contrast(black, bg);
+          const whiteContrast = contrast(white, bg);
+          if (currentContrast >= 4.5) return;
+          span.style.color = blackContrast >= whiteContrast ? 'rgb(17, 24, 39)' : '#ffffff';
+        });
+      }
+
+      let socketIoLoader = null;
+
+      function ensureSocketIo() {
+        if (typeof window.io === 'function') return Promise.resolve();
+        if (socketIoLoader) return socketIoLoader;
+        socketIoLoader = new Promise(function(resolve, reject) {
+          const script = document.createElement('script');
+          script.src = '/assets/js/socket.io.min.js';
+          script.async = true;
+          script.onload = function() {
+            resolve();
+          };
+          script.onerror = function() {
+            reject(new Error('socket.io yuklanmadi'));
+          };
+          document.head.appendChild(script);
+        }).finally(function() {
+          socketIoLoader = null;
+        });
+        return socketIoLoader;
+      }
+
+      function isUnauthorizedSocketError(err) {
+        const msg = String(err && err.message ? err.message : '').toLowerCase();
+        return msg.indexOf('unauthorized') !== -1;
+      }
+
+      async function refreshWsToken() {
+        if (notifTokenRefreshing) return notifTokenRefreshing;
+        notifTokenRefreshing = (async function() {
+          const fd = new FormData();
+          fd.append('csrf_token', wsCsrfToken);
+          const res = await fetch(wsTokenRefreshUrl, {
+            method: 'POST',
+            body: fd,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+          });
+          const data = await res.json().catch(function() {
+            return {};
+          });
+          if (!res.ok || !data.ok || !data.token) {
+            throw new Error('Token yangilanmadi');
+          }
+          wsAuthToken = String(data.token || '');
+          return wsAuthToken;
+        })().finally(function() {
+          notifTokenRefreshing = null;
+        });
+        return notifTokenRefreshing;
+      }
+
+      async function syncNotificationDelta(playSoundOnNew) {
+        if (notifLoadingPromise) return notifLoadingPromise;
+        notifLoadingPromise = (async function() {
+          const prevLastId = notifCache.lastId || 0;
+          await loadNotifications({
+            force: false,
+            delta: true
+          });
+          if (notifCache.lastId > prevLastId) {
+            if (playSoundOnNew && notifStreamSynced) {
+              playNotifSound();
+            }
+            if (notifSocket && notifSocket.connected) {
+              notifSocket.emit('notifications:ack', {
+                last_id: notifCache.lastId
+              });
+            }
+          }
+          notifStreamSynced = true;
+        })().finally(function() {
+          notifLoadingPromise = null;
+        });
+        return notifLoadingPromise;
+      }
+
+      async function openNotifStream() {
+        if (!notifList || !wsAuthToken) return;
+        if (notifSocket) {
+          if (!notifSocket.connected) {
+            notifSocket.connect();
+          }
+          return;
+        }
+
+        try {
+          await ensureSocketIo();
+        } catch (e) {
+          return;
+        }
+
+        if (typeof window.io !== 'function') return;
+
+        const baseUrl = wsSocketUrl || window.location.origin;
+        notifSocket = window.io(baseUrl, {
+          path: wsSocketPath || '/socket.io',
+          transports: ['websocket', 'polling'],
+          withCredentials: true,
+          reconnection: true,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
+          timeout: 15000,
+          auth: {
+            token: wsAuthToken
+          }
+        });
+
+        notifSocket.on('connect', function() {
+          notifSocket.emit('notifications:subscribe', {
+            last_id: notifCache.lastId
+          }, function(res) {
+            if (!res || !res.ok) return;
+            if (typeof res.unread === 'number') {
+              notifCache.unread = Math.max(0, Number(res.unread || 0));
+              updateCount(notifCache.unread);
+            }
+            const maxId = Number(res.max_id || 0);
+            if (maxId > notifCache.lastId) {
+              syncNotificationDelta(false);
+            } else {
+              notifStreamSynced = true;
+            }
+          });
+        });
+
+        notifSocket.on('notifications', function(data) {
+          if (!data || data.ok !== true) return;
+          if (typeof data.unread === 'number') {
+            notifCache.unread = Math.max(0, Number(data.unread || 0));
+            updateCount(notifCache.unread);
+          }
+          const maxId = Number(data.last_id || 0);
+          if (maxId > notifCache.lastId) {
+            syncNotificationDelta(true);
+          }
+        });
+
+        notifSocket.on('count', function(data) {
+          if (!data || data.ok !== true) return;
+          notifCache.unread = Math.max(0, Number(data.unread || 0));
+          updateCount(notifCache.unread);
+        });
+
+        notifSocket.on('connect_error', async function(err) {
+          if (!isUnauthorizedSocketError(err)) return;
+          try {
+            const freshToken = await refreshWsToken();
+            if (!freshToken || !notifSocket) return;
+            notifSocket.auth = {
+              token: freshToken
+            };
+            notifSocket.connect();
+          } catch (e) {
+            closeNotifStream();
+          }
+        });
+      }
+
+      function closeNotifStream() {
+        if (notifSocket) {
+          try {
+            notifSocket.emit('notifications:unsubscribe', {});
+          } catch (e) {}
+          notifSocket.disconnect();
+          notifSocket = null;
+        }
+      }
+
+      function playNotifSound() {
+        if (!notifSound) {
+          notifSound = new Audio('/assets/sound/new-notification.mp3');
+          notifSound.volume = 0.6;
+        }
+        try {
+          const p = notifSound.play();
+          if (p && typeof p.catch === 'function') p.catch(function() {});
+        } catch (e) {}
+      }
+
+
+      if (notifList) {
+        notifList.addEventListener('click', function(e) {
+          const link = e.target.closest('.notif-item');
+          if (!link) return;
+          const rid = Number(link.getAttribute('data-recipient-id') || 0);
+          if (rid > 0) {
+            markNotifRead(rid);
+            markNotifLocal(rid);
+            link.classList.remove('unread');
+          }
+        });
+      }
+
+      if (notifList) {
+        openNotifStream();
+      }
+    })();
+  </script>
+<script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
+
+
