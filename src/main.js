@@ -5,13 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // UI Elements
     const mathCards = document.querySelectorAll('a[href="/game/arqon/"]');
     const enCards = document.querySelectorAll('a[href="/game/en/"]');
+    const ruCards = document.querySelectorAll('a[href="/game/ru/"]');
     const modalOverlay = document.getElementById('game-modal-overlay');
     const gameUI = document.getElementById('game-ui');
     const gameHeaderTitle = document.querySelector('.game-header h2');
     
     // Modal steps
     let currentStep = 1;
-    let gameMode = 'math'; // 'math' or 'en'
+    let gameMode = 'math'; // 'math', 'en', 'ru'
     
     const steps = document.querySelectorAll('.step');
     const stepContents = document.querySelectorAll('.step-content');
@@ -48,13 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
         { q: "Opposite of 'fast':", options: ["Quick", "Slow", "Hard", "Easy"], correct: 1 },
         { q: "Plural of 'mouse':", options: ["Mouses", "Mice", "Meese", "Mouse"], correct: 1 },
         { q: "What is 3rd letter of alphabet?", options: ["A", "B", "C", "D"], correct: 2 },
-        { q: "Past tense of 'eat':", options: ["Eated", "Eaten", "Ate", "Eating"], correct: 2 },
-        { q: "Translate: 'Kitob'", options: ["Pen", "Pencil", "Book", "Bag"], correct: 2 },
-        { q: "Which is an animal?", options: ["Car", "Dog", "Tree", "Sun"], correct: 1 },
-        { q: "Plural of 'person':", options: ["Persons", "People", "Peoples", "Person"], correct: 1 },
-        { q: "Opposite of 'hot':", options: ["Warm", "Cool", "Cold", "Boiling"], correct: 2 },
-        { q: "Synonym for 'start':", options: ["End", "Finish", "Begin", "Stop"], correct: 2 },
-        { q: "Past tense of 'see':", options: ["Seed", "Seen", "Saw", "Seeing"], correct: 2 }
+        { q: "Past tense of 'eat':", options: ["Eated", "Eaten", "Ate", "Eating"], correct: 2 }
+    ];
+
+    const ruQuestions = [
+        { q: "Сколько слогов в слове «молоко»?", options: ["4", "3", "1", "2"], correct: 1 },
+        { q: "Сколько времен у глаголов в русском языке?", options: ["5", "4", "2", "3"], correct: 3 },
+        { q: "Антоним к слову «большой»:", options: ["Высокий", "Длинный", "Маленький", "Широкий"], correct: 2 },
+        { q: "Как пишется?", options: ["Пагода", "Погода", "Пагада", "Погада"], correct: 1 },
+        { q: "Какой падеж отвечает на вопросы Кем? Чем?", options: ["Именительный", "Дательный", "Творительный", "Родительный"], correct: 2 },
+        { q: "Множественное число слова «человек»:", options: ["Человеки", "Люди", "Человеков", "Люд"], correct: 1 },
+        { q: "Синоним к слову «красивый»:", options: ["Ужасный", "Плохой", "Прекрасный", "Злой"], correct: 2 },
+        { q: "Какая буква идет после 'Д'?", options: ["Ж", "Г", "Е", "З"], correct: 2 },
+        { q: "Сколько падежей в русском языке?", options: ["5", "6", "7", "4"], correct: 1 },
+        { q: "Переведите: 'Olma'", options: ["Груша", "Апельсин", "Яблоко", "Банан"], correct: 2 }
     ];
 
     // 1. Open Modal
@@ -74,9 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    ruCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            gameMode = 'ru';
+            openModal();
+        });
+    });
+
     function openModal() {
         modalOverlay.classList.remove('hidden');
-        if (gameMode === 'en') {
+        if (gameMode === 'en' || gameMode === 'ru') {
             document.querySelector('.game-modal-steps').classList.add('hide-el');
             currentStep = 3;
             updateModalUI();
@@ -128,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btnStart.classList.add('hidden');
         } else if (currentStep === 3) {
             if (gameMode === 'math') btnPrev.classList.remove('hidden');
-            else btnPrev.classList.add('hidden'); // English has no previous
+            else btnPrev.classList.add('hidden'); 
             btnNext.classList.add('hidden');
             btnStart.classList.remove('hidden');
         }
@@ -157,8 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'hidden';
         gameUI.classList.remove('hidden');
         
-        if (gameMode === 'en') {
-            gameHeaderTitle.innerText = "ARQON TORTISH: INGLIZ TILI";
+        if (gameMode === 'en' || gameMode === 'ru') {
+            gameHeaderTitle.innerText = gameMode === 'en' ? "ARQON TORTISH: INGLIZ TILI" : "ARQON TORTISH: RUS TILI";
             document.querySelectorAll('.numpad').forEach(el => el.classList.add('hide-el'));
             document.querySelectorAll('.answer-input').forEach(el => el.classList.add('hide-el'));
             document.getElementById('game-mcq1').classList.remove('hidden');
@@ -217,10 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (op === '/') ans = a / b;
             return { str: qStr, ans: ans, type: 'math' };
         } else {
-            // English mode
-            const idx = Math.floor(Math.random() * enQuestions.length);
-            const qObj = enQuestions[idx];
-            return { str: qObj.q, options: qObj.options, correct: qObj.correct, type: 'en' };
+            // English or Russian mode
+            const bank = gameMode === 'en' ? enQuestions : ruQuestions;
+            const idx = Math.floor(Math.random() * bank.length);
+            const qObj = bank[idx];
+            return { str: qObj.q, options: qObj.options, correct: qObj.correct, type: gameMode };
         }
     }
 
@@ -240,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('game-answer1').value = "";
         document.getElementById('game-answer2').value = "";
         
-        // Reset MCQ buttons styling
         document.querySelectorAll('.mcq-btn').forEach(btn => {
             btn.classList.remove('correct', 'wrong');
         });
@@ -353,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // English MCQ logic
+    // English/Russian MCQ logic
     document.querySelectorAll('.mcq-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const team = parseInt(btn.dataset.team);
